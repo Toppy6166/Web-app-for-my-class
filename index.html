@@ -1,361 +1,272 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>AI Fitness & Nutrition Assistant (Study Case)</title>
+  <title>FitSense AI – Fitness & Nutrition (Study Case)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================================================
-       NEW THEME (Different Look) — "Aurora Glass"
-       Edit colors quickly in :root
-    ========================================================= */
     :root{
-      --bgA:#0b1220;
-      --bgB:#0a2a2b;
-      --bgC:#2b114d;
-
-      --card: rgba(255,255,255,.08);
-      --card2: rgba(255,255,255,.10);
-      --stroke: rgba(255,255,255,.16);
-
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
-
-      --accent:#22c1c3;   /* teal */
-      --accent2:#8a2be2;  /* purple */
-      --accent3:#ff5ea8;  /* pink (for special highlights) */
-
-      --ok:#2ee59d;
-      --warn:#ffb020;
-      --bad:#ff4d6d;
-      --neutral: rgba(255,255,255,.24);
-
-      --shadow: 0 18px 42px rgba(0,0,0,.42);
-      --shadowSoft: 0 10px 24px rgba(0,0,0,.28);
-
-      --radius: 22px;
-      --radiusSm: 16px;
-
-      --ring: 0 0 0 3px rgba(34,193,195,.25);
+      --p:#6C63FF;        /* Primary (AI Tech) */
+      --s:#00C9A7;        /* Secondary (Health) */
+      --a:#FFB020;        /* Accent */
+      --bg1:#F3F4FF;
+      --bg2:#E9FFF8;
+      --ink:#22253a;
+      --muted:rgba(34,37,58,.72);
+      --card:#ffffffee;
+      --stroke:rgba(0,0,0,.08);
+      --danger:#E94B4B;
     }
 
-    *{
-      box-sizing:border-box;
-      font-family:"Prompt", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    }
-
+    *{box-sizing:border-box;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
     body{
       margin:0;
       min-height:100vh;
-      color: var(--text);
-      background:
-        radial-gradient(900px 500px at 10% 10%, rgba(34,193,195,.22), transparent 60%),
-        radial-gradient(900px 520px at 90% 25%, rgba(138,43,226,.22), transparent 62%),
-        radial-gradient(700px 460px at 50% 92%, rgba(255,94,168,.12), transparent 60%),
-        linear-gradient(135deg, var(--bgA), var(--bgB) 45%, var(--bgC));
-      padding-bottom: 92px; /* bottom nav space */
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      padding-bottom:92px; /* bottom nav space */
+      color:var(--ink);
+    }
+    .hide{display:none!important}
+
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:18px 14px;
     }
 
-    .hide{ display:none !important; }
+    /* Top brand */
+    .brand{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin:10px auto 0;
+      max-width:980px;
+      padding:0 14px;
+    }
+    .logo{
+      display:flex;align-items:center;gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:14px;height:14px;border-radius:999px;background:var(--p);
+      box-shadow:0 8px 24px rgba(108,99,255,.35);
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      background:#fff; border:1px solid var(--stroke);
+      font-size:12px;color:var(--muted)
+    }
 
+    /* Card */
     .card{
-      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.05));
-      border: 1px solid var(--stroke);
-      max-width: 560px;
-      margin: 14px auto;
-      padding: 18px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background:var(--card);
+      border:1px solid var(--stroke);
+      backdrop-filter: blur(8px);
+      max-width:560px;
+      margin:14px auto;
+      padding:18px;
+      border-radius:22px;
+      box-shadow:0 18px 40px rgba(0,0,0,.10);
     }
+    h2,h3{margin:8px 0 10px}
+    h2{font-size:22px;text-align:center;color:var(--p)}
+    h3{font-size:16px}
+    p{line-height:1.5;margin:8px 0}
+    small{color:var(--muted)}
 
-    h2, h3{
-      text-align:center;
-      margin: 10px 0;
-      letter-spacing: .2px;
-    }
-
-    p{ line-height:1.55; color: var(--muted); }
-
-    input, select, textarea{
+    /* Inputs */
+    input,select,textarea{
       width:100%;
-      padding: 12px 12px;
-      margin: 7px 0;
-      border-radius: var(--radiusSm);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      outline: none;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.12);
+      background:#fff;
+      outline:none;
+      margin:6px 0;
+      color:var(--ink);
     }
-    input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.55); }
-    select{ appearance:none; }
-    textarea{ min-height: 95px; resize: vertical; }
+    textarea{min-height:92px;resize:vertical}
 
-    input:focus, select:focus, textarea:focus{
-      border-color: rgba(34,193,195,.55);
-      box-shadow: var(--ring);
-      background: rgba(255,255,255,.09);
-    }
-
-    /* Buttons: softer, modern, gradient */
+    /* Buttons */
     button{
       width:100%;
-      padding: 13px 14px;
-      margin-top: 10px;
+      padding:13px 12px;
       border:none;
-      border-radius: 18px;
-      color: #081018;
+      border-radius:16px;
       cursor:pointer;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: var(--shadowSoft);
-      font-weight: 700;
-      letter-spacing: .2px;
-      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease, opacity .12s ease;
+      font-weight:700;
+      margin-top:10px;
+      transition:transform .08s ease, opacity .1s ease;
+      box-shadow:0 10px 22px rgba(0,0,0,.10);
     }
-    button:hover{ transform: translateY(-1px); filter: brightness(1.03); }
-    button:active{ transform: translateY(1px); filter: brightness(.98); }
-    button:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
-
-    /* Status colors */
-    .green{ background: linear-gradient(135deg, var(--ok), rgba(34,193,195,.7)); color:#04120c; }
-    .red{ background: linear-gradient(135deg, var(--bad), rgba(255,94,168,.75)); color:#16040b; }
-    .orange{ background: linear-gradient(135deg, var(--warn), rgba(255,94,168,.55)); color:#140c02; }
-    .gray{
-      background: rgba(255,255,255,.10);
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: none;
+    button:active{transform:translateY(2px)}
+    button:disabled{opacity:.6;cursor:not-allowed}
+    .bP{background:var(--p);color:#fff}
+    .bS{background:var(--s);color:#fff}
+    .bA{background:var(--a);color:#1b1b1b}
+    .bG{background:#9aa0aa;color:#fff}
+    .bD{background:var(--danger);color:#fff}
+    .bO{
+      background:transparent;
+      border:2px solid var(--p);
+      color:var(--p);
+      box-shadow:none;
     }
 
-    .outline{
-      background: transparent;
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,.22);
-      box-shadow: none;
-    }
-    .outline:hover{
-      border-color: rgba(34,193,195,.55);
-      box-shadow: 0 0 0 3px rgba(34,193,195,.14);
-      transform: translateY(-1px);
-    }
-    .outline:active{ transform: translateY(1px); }
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:560px){ .row{grid-template-columns:1fr} }
 
-    .row{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    @media (max-width: 560px){
-      .row{ grid-template-columns: 1fr; }
-      .card{ margin: 12px 12px; }
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.12);
-      font-size: 12px;
-      margin: 4px 6px 0 0;
-      color: rgba(255,255,255,.86);
-    }
-
-    table{
-      width:100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      overflow:hidden;
-      border-radius: var(--radiusSm);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-    }
-    th, td{
-      border-bottom: 1px solid rgba(255,255,255,.12);
-      padding: 9px 8px;
-      text-align:center;
-      color: rgba(255,255,255,.86);
-    }
-    th{
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.92);
-      font-weight: 800;
-    }
-    tr:nth-child(even) td{ background: rgba(255,255,255,.03); }
-
-    .disclaimer{
-      font-size: 12px;
-      padding: 10px 12px;
-      border-radius: var(--radiusSm);
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      margin-top: 10px;
-      white-space: pre-line;
-      color: rgba(255,255,255,.80);
-    }
-
-    /* Bottom nav: floating glass bar + pill tabs */
-    .bottom-nav{
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      padding: 10px 12px 16px;
-      z-index: 1000;
-      pointer-events: none;
-    }
-    .nav-wrap{
-      pointer-events: auto;
-      max-width: 560px;
-      margin: 0 auto;
-      display:grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      padding: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 18px 40px rgba(0,0,0,.35);
-    }
-    .tab{
-      border-radius: 999px;
-      padding: 10px 6px;
-      text-align:center;
-      font-size: 12px;
-      cursor:pointer;
-      user-select:none;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.82);
-      font-weight: 800;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-    }
-    .tab:hover{ transform: translateY(-1px); border-color: rgba(34,193,195,.45); }
-    .tab.active{
-      background: linear-gradient(135deg, rgba(34,193,195,.95), rgba(138,43,226,.95));
-      color: #061018;
-      border-color: transparent;
-      box-shadow: 0 8px 18px rgba(34,193,195,.18);
-    }
-
-    /* Tutorial overlay: cleaner */
-    .overlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.62);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-      z-index: 9999;
-    }
-    .overlay-card{
-      width:100%;
-      max-width: 560px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: 0 18px 44px rgba(0,0,0,.45);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      color: var(--text);
-    }
-    .overlay-top{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-    }
-    .step{
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.12);
-      font-weight: 900;
-      color: rgba(255,255,255,.88);
-    }
-    .highlight{
-      outline: 3px solid rgba(255,94,168,.75);
-      outline-offset: 3px;
-      border-radius: 14px;
-      transition: outline .15s ease;
-    }
-
-    /* Admin terminal box */
-    .admin-box{
-      background: rgba(0,0,0,.35);
-      color: rgba(255,255,255,.88);
-      padding: 12px;
-      border-radius: var(--radiusSm);
-      max-height: 360px;
-      overflow:auto;
-      border: 1px solid rgba(255,255,255,.12);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 12px;
-    }
-
-    /* Small header bar */
+    /* Mini header in app */
     .topbar{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      margin-bottom: 10px;
-      padding: 10px 12px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-bottom:10px;
     }
-    .topbar .who{ font-weight: 900; }
-    .topbar .lang{ font-size: 12px; opacity: .82; color: var(--muted); }
+    .who{font-weight:800}
+    .subbar{font-size:12px;color:var(--muted)}
 
-    .muted{ opacity: .82; color: var(--muted); }
-
-    .miniBtns{ display:flex; gap:8px; flex-wrap:wrap; }
-    .miniBtns button{ width:auto; flex:1; min-width:120px; margin-top:8px; }
-
-    .dangerNote{
-      font-size: 12px;
-      opacity: .92;
-      margin-top: 10px;
-      line-height: 1.5;
-      color: rgba(255,255,255,.78);
+    /* Dashboard cards */
+    .grid4{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
     }
+    @media(max-width:820px){ .grid4{grid-template-columns:repeat(2,1fr)} }
+    .kpi{
+      padding:12px;border-radius:18px;background:#fff;
+      border:1px solid var(--stroke);
+    }
+    .kpi .label{font-size:12px;color:var(--muted);font-weight:700}
+    .kpi .val{font-size:20px;font-weight:900;margin-top:4px}
+    .kpi .hint{font-size:11px;color:var(--muted);margin-top:4px}
+    .kpi.p{border-left:6px solid var(--p)}
+    .kpi.s{border-left:6px solid var(--s)}
+    .kpi.a{border-left:6px solid var(--a)}
+    .kpi.d{border-left:6px solid var(--danger)}
 
     .section{
-      padding: 12px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      margin-top: 10px;
+      margin-top:12px;
+      padding:12px;
+      border-radius:18px;
+      background:rgba(255,255,255,.75);
+      border:1px solid var(--stroke);
     }
-    .right{ display:flex; justify-content:flex-end; }
+
+    table{width:100%;border-collapse:collapse;font-size:13px;border-radius:14px;overflow:hidden}
+    th,td{border:1px solid rgba(0,0,0,.10);padding:8px;text-align:center}
+    th{background:rgba(0,0,0,.04);font-weight:800}
+
+    .disclaimer{
+      font-size:12px;
+      padding:10px;
+      border-radius:14px;
+      background:rgba(0,0,0,.04);
+      border:1px solid rgba(0,0,0,.06);
+      white-space:pre-line;
+      margin-top:10px;
+      color:var(--muted);
+    }
+
+    /* Bottom nav */
+    .bottom-nav{
+      position:fixed;left:0;right:0;bottom:0;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(12px);
+      border-top:1px solid rgba(0,0,0,.10);
+      padding:10px 10px 16px;
+      z-index:999;
+    }
+    .nav-wrap{
+      max-width:980px;margin:0 auto;
+      display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+    }
+    .tab{
+      border-radius:16px;
+      padding:10px 6px;
+      text-align:center;
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      border:1px solid rgba(0,0,0,.08);
+      background:rgba(0,0,0,.03);
+      font-weight:800;
+    }
+    .tab.active{
+      background:var(--p);
+      color:#fff;
+      border-color:var(--p);
+      box-shadow:0 12px 26px rgba(108,99,255,.28);
+    }
+
+    /* Modal */
+    .overlay{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.55);
+      display:flex;align-items:center;justify-content:center;
+      padding:16px;z-index:9999;
+    }
+    .modal{
+      width:100%;
+      max-width:640px;
+      background:#fff;border-radius:22px;
+      padding:16px;
+      box-shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+    .modalTop{
+      display:flex;align-items:center;justify-content:space-between;gap:10px
+    }
+    .modalTitle{font-weight:900;color:var(--p)}
+    .xBtn{width:auto;padding:10px 12px;border-radius:14px}
+
+    /* Tutorial */
+    .tStep{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.06);font-weight:900}
+    .highlight{outline:3px solid rgba(255,176,32,.95);outline-offset:3px;border-radius:14px}
+
+    /* Admin terminal look */
+    .adminBox{
+      background:#0f1222;color:#d8defa;
+      border-radius:18px;padding:12px;border:1px solid rgba(255,255,255,.10);
+      overflow:auto;max-height:420px;font-size:12px;
+    }
+    .adminBox table{font-size:12px}
+    .adminBox th{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.12)}
+    .adminBox td{border-color:rgba(255,255,255,.12)}
   </style>
 </head>
 
 <body>
 
-  <!-- ============ AUTH SCREENS ============ -->
-  <div class="card" id="registerBox">
-    <h2 id="t_reg_title">📝 สมัครสมาชิก</h2>
-    <input id="rUser" placeholder="Username" autocomplete="username" />
-    <input id="rPass" type="password" placeholder="Password" autocomplete="new-password" />
-    <input id="rEmail" placeholder="Email" />
+  <div class="brand">
+    <div class="logo"><span class="dot"></span> FitSense AI</div>
+    <div class="pill" id="topPill">Study Case • LocalStorage</div>
+  </div>
 
-    <div class="row">
-      <input id="rName" placeholder="ชื่อ" />
-      <input id="rLname" placeholder="นามสกุล" />
+  <!-- ================= AUTH ================= -->
+  <div class="card" id="registerBox">
+    <div class="topbar">
+      <div>
+        <div class="who" id="t_reg_title"> Register</div>
+        <div class="subbar" id="t_reg_sub">Create your profile to get AI suggestions</div>
+      </div>
+      <select id="regLangSwitch" style="width:auto" onchange="setUiLang(this.value); applyStaticI18n();">
+        <option value="en">ENG</option>
+        <option value="th">TH</option>
+      </select>
     </div>
 
     <div class="row">
-      <input id="rAge" type="number" placeholder="อายุ" />
+      <input id="rUser" placeholder="Username (≥ 3 chars)" autocomplete="username">
+      <input id="rEmail" placeholder="Email" autocomplete="email">
+    </div>
+    <input id="rPass" type="password" placeholder="Password (≥ 6 + special char)" autocomplete="new-password">
+
+    <div class="row">
+      <input id="rName" placeholder="First name">
+      <input id="rLname" placeholder="Last name">
+    </div>
+
+    <div class="row">
+      <input id="rAge" type="number" placeholder="Age">
       <select id="rGender">
         <option value="male">Male</option>
         <option value="female">Female</option>
@@ -364,232 +275,316 @@
     </div>
 
     <div class="row">
-      <input id="rWeight" type="number" placeholder="Weight (kg)" />
-      <input id="rHeight" type="number" placeholder="Height (cm)" />
+      <input id="rWeight" type="number" placeholder="Weight (kg)">
+      <input id="rHeight" type="number" placeholder="Height (cm)">
     </div>
 
-    <select id="rGoal">
-      <option value="lose">Lose weight</option>
-      <option value="maintain">Maintain</option>
-      <option value="gain">Gain muscle</option>
-    </select>
-
-    <select id="rLang">
-      <option value="en">English (ENG)</option>
-      <option value="th">ไทย (THA)</option>
-    </select>
-
-    <button id="btnRegister" onclick="register()">สมัครสมาชิก</button>
-    <button class="gray" id="btnGoLogin" onclick="showLogin()">ไปหน้าเข้าสู่ระบบ</button>
-
-    <div class="disclaimer" id="t_disclaimer_auth"></div>
-  </div>
-
-  <div class="card hide" id="loginBox">
-    <h2 id="t_login_title">🔐 เข้าสู่ระบบ</h2>
-    <input id="lUser" placeholder="Username" autocomplete="username" />
-    <input id="lPass" type="password" placeholder="Password" autocomplete="current-password" />
-
-    <label class="muted" style="display:flex;align-items:center;gap:8px;margin-top:8px">
-      <input type="checkbox" id="rememberMe" style="width:auto;transform:scale(1.15);margin:0">
-      <span id="t_remember">Remember me (Auto login)</span>
-    </label>
-
-    <button id="btnLogin" onclick="login()">เข้าสู่ระบบ</button>
-
-    <button class="orange" id="btnForgot" onclick="showForgot()">ลืมรหัสผ่าน (OTP จำลอง)</button>
-    <button class="gray" id="btnGoRegister" onclick="showRegister()">สมัครสมาชิก</button>
-
-    <div class="disclaimer" id="t_disclaimer_auth2"></div>
-  </div>
-
-  <div class="card hide" id="forgotBox">
-    <h2 id="t_forgot_title">📧 รีเซ็ตรหัสผ่าน (จำลอง)</h2>
-    <input id="fEmail" placeholder="Email" />
-    <button id="btnSendOTP" onclick="sendOTP()">ขอ OTP</button>
-    <input id="fOTP" placeholder="OTP" />
-    <input id="fNewPass" type="password" placeholder="รหัสใหม่" />
-    <button class="green" id="btnReset" onclick="resetPassword()">ตั้งรหัสใหม่</button>
-    <button class="gray" id="btnCancelReset" onclick="showLogin()">ยกเลิก</button>
-
-    <div class="disclaimer" id="t_disclaimer_otp"></div>
-  </div>
-
-  <!-- ============ USER APP ============ -->
-  <div class="card hide" id="appBox">
-    <div class="topbar">
-      <div>
-        <div class="who" id="welcome"></div>
-        <div class="lang" id="topLang"></div>
-      </div>
-      <button class="outline" style="width:auto;padding:10px 12px;border-radius:14px" id="btnLogoutTop" onclick="logout()">
-        Logout
-      </button>
-    </div>
-
-    <!-- Screens -->
-    <div id="screenHome">
-      <h3 id="t_home_title">🏠 หน้าแรก</h3>
-      <div id="homeBadges"></div>
-
-      <div class="disclaimer" id="t_home_disclaimer"></div>
-
-      <h3 id="t_progress_title">📈 สรุปวันนี้</h3>
-      <div id="homeOverview"></div>
-    </div>
-
-    <div id="screenFood" class="hide">
-      <h3 id="t_food_title">🍽 อาหาร & แคลอรี</h3>
-
-      <div class="row">
-        <select id="foodDay">
-          <option value="today">Today</option>
-        </select>
-        <button class="outline" id="btnRecalcTarget" onclick="renderFood()">
-          Recalculate
-        </button>
-      </div>
-
-      <div id="calorieSummary"></div>
-
-      <button id="btnGenMeals" onclick="generateMeals()">Generate AI Meals</button>
-      <div class="disclaimer" id="t_ai_disclaimer"></div>
-
-      <div id="aiMealTable"></div>
-
-      <h3 id="t_intake_title">➕ บันทึกแคลอรีที่กิน (จำลอง)</h3>
-
-      <div class="section">
-        <div class="row">
-          <input id="intakeName" placeholder="ชื่ออาหาร" />
-          <input id="intakeCal" type="number" placeholder="แคลอรี" />
-        </div>
-
-        <div class="miniBtns">
-          <button class="green" id="btnAddIntake" onclick="addIntake()">เพิ่มรายการ</button>
-          <button class="gray" id="btnQuick200" onclick="quickAdd(200)">+200</button>
-          <button class="gray" id="btnQuick500" onclick="quickAdd(500)">+500</button>
-          <button class="gray" id="btnQuick800" onclick="quickAdd(800)">+800</button>
-        </div>
-
-        <div class="row" style="margin-top:8px">
-          <input id="manualGoal" type="number" placeholder="ตั้งเป้า kcal/วัน (เช่น 1800)" />
-          <button class="outline" id="btnSaveManualGoal" onclick="saveManualGoal()">Save goal</button>
-        </div>
-
-        <div class="dangerNote" id="t_calorie_note"></div>
-      </div>
-
-      <h3 id="t_today_log">📋 รายการที่บันทึกวันนี้</h3>
-      <div id="intakeLogTable"></div>
-
-      <h3 id="t_history_title">📊 ประวัติรายวัน</h3>
-      <div id="historyTable"></div>
-    </div>
-
-    <div id="screenWorkout" class="hide">
-      <h3 id="t_workout_title">🏋️ แผนออกกำลังกาย</h3>
-
-      <div class="row">
-        <select id="wLevel">
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-        </select>
-        <select id="wGoal">
-          <option value="fatloss">Fat loss</option>
-          <option value="musclegain">Muscle gain</option>
-          <option value="general">General fitness</option>
-        </select>
-      </div>
-
-      <div class="row">
-        <select id="wDays">
-          <option value="3">3 days / week</option>
-          <option value="4">4 days / week</option>
-          <option value="5">5 days / week</option>
-          <option value="6">6 days / week</option>
-        </select>
-        <select id="wEquip">
-          <option value="gym">Gym</option>
-          <option value="home">Home</option>
-          <option value="none">No equipment</option>
-        </select>
-      </div>
-
-      <button id="btnGenWorkout" onclick="generateWorkout()">Generate AI Workout Plan</button>
-      <button class="orange" id="btnRegenWorkout" onclick="generateWorkout(true)">Regenerate Plan</button>
-
-      <div class="disclaimer" id="t_workout_ai_disclaimer"></div>
-
-      <div id="workoutPlan"></div>
-
-      <h3 id="t_edit_title">✍️ แก้ไขโน้ต (ถ้าต้องการ)</h3>
-      <textarea id="workoutNotes" placeholder="Edit or write notes here..."></textarea>
-      <button class="green" id="btnSaveNotes" onclick="saveWorkoutNotes()">Save Notes</button>
-    </div>
-
-    <div id="screenProfile" class="hide">
-      <h3 id="t_profile_title">👤 โปรไฟล์</h3>
-      <div id="profileInfo"></div>
-
-      <h3 id="t_profile_goal">🎯 เป้าหมายฟิตเนส</h3>
-      <select id="profileGoal">
+    <div class="row">
+      <select id="rGoal">
         <option value="lose">Lose weight</option>
         <option value="maintain">Maintain</option>
         <option value="gain">Gain muscle</option>
       </select>
-      <button class="green" id="btnSaveProfile" onclick="saveProfile()">Save Profile</button>
-
-      <div class="disclaimer" id="t_profile_disclaimer"></div>
-    </div>
-
-    <div id="screenSettings" class="hide">
-      <h3 id="t_settings_title">⚙️ ตั้งค่า</h3>
-
-      <label class="muted" id="t_lang_label">Language</label>
-      <select id="langSwitch" onchange="changeLanguage(this.value)">
+      <select id="rLang">
         <option value="en">English (ENG)</option>
         <option value="th">ไทย (THA)</option>
       </select>
-
-      <button class="outline" id="btnReplayTutorial" onclick="startUserTutorial(true)">Replay Tutorial</button>
-
-      <div class="disclaimer" id="t_settings_disclaimer"></div>
-
-      <h3 id="t_admin_hint_title">🔒 Admin Access (Hidden)</h3>
-      <p class="muted" id="t_admin_hint_body"></p>
-
-      <div class="dangerNote" id="t_admin_longpress"></div>
     </div>
 
-    <button class="red" id="btnLogout" onclick="logout()">Logout</button>
+    <button class="bP" id="btnRegister" onclick="register()">Register</button>
+    <button class="bO" id="btnGoLogin" onclick="showLogin()" style="margin-top:10px">Go to Login</button>
+
+    <div class="disclaimer" id="t_auth_disclaimer"></div>
   </div>
 
-  <!-- ============ ADMIN PANEL ============ -->
-  <div class="card hide" id="adminBox">
+  <div class="card hide" id="loginBox">
     <div class="topbar">
       <div>
-        <div class="who" id="adminTitle">🔒 Admin Panel</div>
-        <div class="lang" id="adminLang"></div>
+        <div class="who" id="t_login_title"> Login</div>
+        <div class="subbar" id="t_login_sub">Welcome back</div>
       </div>
-      <button class="outline" style="width:auto;padding:10px 12px;border-radius:14px" id="btnAdminLogoutTop" onclick="logout()">
-        Logout
-      </button>
+      <select id="loginLangSwitch" style="width:auto" onchange="setUiLang(this.value); applyStaticI18n();">
+        <option value="en">ENG</option>
+        <option value="th">TH</option>
+      </select>
     </div>
 
-    <div class="disclaimer" id="t_admin_disclaimer"></div>
+    <input id="lUser" placeholder="Username" autocomplete="username">
+    <input id="lPass" type="password" placeholder="Password" autocomplete="current-password">
 
-    <div class="section">
-      <input id="adminSearch" placeholder="Search user/email/lang/goal..." />
-      <div class="dangerNote" id="t_admin_rules"></div>
+    <label style="display:flex;align-items:center;gap:8px;margin-top:6px;color:var(--muted);font-size:13px">
+      <input type="checkbox" id="rememberMe" style="width:auto;transform:scale(1.1);margin:0">
+      <span id="t_remember">Remember me</span>
+    </label>
+
+    <button class="bP" id="btnLogin" onclick="login()">Login</button>
+    <button class="bA" id="btnForgot" onclick="showForgot()">Forgot Password (OTP Email)</button>
+    <button class="bO" id="btnGoRegister" onclick="showRegister()">Create new account</button>
+
+    <div class="disclaimer" id="t_auth_disclaimer2"></div>
+  </div>
+
+  <div class="card hide" id="forgotBox">
+    <div class="topbar">
+      <div>
+        <div class="who" id="t_forgot_title"> Reset password</div>
+        <div class="subbar" id="t_forgot_sub">OTP will be sent to your email</div>
+      </div>
+      <select id="forgotLangSwitch" style="width:auto" onchange="setUiLang(this.value); applyStaticI18n();">
+        <option value="en">ENG</option>
+        <option value="th">TH</option>
+      </select>
     </div>
 
-    <div id="adminStats"></div>
-    <div class="admin-box" id="adminData"></div>
+    <input id="fEmail" placeholder="Email">
+    <button class="bP" id="btnSendOTP" onclick="sendOTP()">Send OTP to Email</button>
 
-    <button class="outline" id="btnReplayAdminTutorial" onclick="startAdminTutorial(true)">Replay Admin Tutorial</button>
-    <button class="red" id="btnAdminLogout" onclick="logout()">Logout</button>
+    <div class="row">
+      <input id="fOTP" placeholder="OTP">
+      <input id="fNewPass" type="password" placeholder="New password (≥ 6 + special char)">
+    </div>
+
+    <button class="bS" id="btnReset" onclick="resetPassword()">Reset Password</button>
+    <button class="bO" id="btnCancelReset" onclick="showLogin()">Cancel</button>
+
+    <div class="disclaimer" id="t_otp_disclaimer"></div>
+  </div>
+
+  <!-- ================= USER APP ================= -->
+  <div class="wrap hide" id="appWrap">
+    <div class="card" id="appBox">
+      <div class="topbar">
+        <div>
+          <div class="who" id="welcome"></div>
+          <div class="subbar" id="topLang"></div>
+        </div>
+        <button class="bO" style="width:auto;padding:10px 12px;border-radius:14px" id="btnLogoutTop" onclick="logout()">
+          Logout
+        </button>
+      </div>
+
+      <!-- Screens -->
+      <div id="screenHome">
+        <h3 id="t_home_title"> Home Dashboard</h3>
+
+        <div class="grid4" id="homeKpis"></div>
+
+        <div class="section" id="aiInsightBox"></div>
+
+        <div class="section">
+          <h3 style="margin:0 0 8px" id="t_today_tables"> Today Summary</h3>
+          <div id="homeTables"></div>
+        </div>
+
+        <div class="disclaimer" id="t_home_disclaimer"></div>
+      </div>
+
+      <div id="screenFood" class="hide">
+        <h3 id="t_food_title"> Food & Calories</h3>
+
+        <div id="calorieSummary"></div>
+
+        <button class="bP" id="btnGenMeals" onclick="generateMeals()">Generate AI Meals</button>
+        <div class="disclaimer" id="t_ai_disclaimer"></div>
+        <div id="aiMealTable"></div>
+
+        <h3 id="t_intake_title"> Log Intake</h3>
+        <div class="section">
+          <div class="row">
+            <input id="intakeName" placeholder="Food name">
+            <input id="intakeCal" type="number" placeholder="Calories">
+          </div>
+          <div class="row">
+            <button class="bS" id="btnAddIntake" onclick="addIntake()">Add</button>
+            <button class="bO" onclick="quickAdd(200)">+200</button>
+          </div>
+          <div class="row">
+            <button class="bO" onclick="quickAdd(500)">+500</button>
+            <button class="bO" onclick="quickAdd(800)">+800</button>
+          </div>
+
+          <div class="row" style="margin-top:8px">
+            <input id="manualGoal" type="number" placeholder="Set calorie goal/day (e.g., 1800)">
+            <button class="bO" id="btnSaveManualGoal" onclick="saveManualGoal()">Save goal</button>
+          </div>
+
+          <div class="disclaimer" id="t_calorie_note"></div>
+        </div>
+
+        <h3 id="t_today_log"> Today intake list</h3>
+        <div id="intakeLogTable"></div>
+
+        <h3 id="t_history_title"> Daily History</h3>
+        <div id="historyTable"></div>
+      </div>
+
+      <div id="screenWorkout" class="hide">
+        <h3 id="t_workout_title"> Workout + Calories Burned</h3>
+
+        <div class="section">
+          <h3 style="margin:0 0 8px" id="t_burn_title"> Log Workout (Burned Calories)</h3>
+          <div class="row">
+            <select id="wType">
+              <option value="walk">Walking</option>
+              <option value="run">Running</option>
+              <option value="cycle">Cycling</option>
+              <option value="weights">Weight training</option>
+              <option value="hiit">HIIT</option>
+            </select>
+            <input id="wMinutes" type="number" placeholder="Minutes (e.g., 30)">
+          </div>
+          <div class="row">
+            <select id="wIntensity">
+              <option value="light">Light</option>
+              <option value="moderate" selected>Moderate</option>
+              <option value="hard">Hard</option>
+            </select>
+            <button class="bS" id="btnAddWorkoutLog" onclick="addWorkoutLog()">Add workout</button>
+          </div>
+          <div class="disclaimer" id="t_burn_note"></div>
+          <div id="workoutLogTable"></div>
+        </div>
+
+        <div class="section">
+          <h3 style="margin:0 0 8px" id="t_plan_title"> AI Workout Plan (Mock)</h3>
+
+          <div class="row">
+            <select id="wLevel">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+            <select id="wGoal">
+              <option value="fatloss">Fat loss</option>
+              <option value="musclegain">Muscle gain</option>
+              <option value="general">General fitness</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <select id="wDays">
+              <option value="3">3 days / week</option>
+              <option value="4">4 days / week</option>
+              <option value="5">5 days / week</option>
+              <option value="6">6 days / week</option>
+            </select>
+            <select id="wEquip">
+              <option value="gym">Gym</option>
+              <option value="home">Home</option>
+              <option value="none">No equipment</option>
+            </select>
+          </div>
+
+          <button class="bP" id="btnGenWorkout" onclick="generateWorkout()">Generate Plan</button>
+          <button class="bA" id="btnRegenWorkout" onclick="generateWorkout(true)">Regenerate</button>
+
+          <div class="disclaimer" id="t_workout_ai_disclaimer"></div>
+          <div id="workoutPlan"></div>
+
+          <h3 id="t_edit_title"> Notes</h3>
+          <textarea id="workoutNotes" placeholder="Write notes here..."></textarea>
+          <button class="bS" id="btnSaveNotes" onclick="saveWorkoutNotes()">Save Notes</button>
+        </div>
+      </div>
+
+      <div id="screenProfile" class="hide">
+        <h3 id="t_profile_title"> Profile</h3>
+        <div class="disclaimer" id="t_profile_lock_email"></div>
+
+        <div id="profileInfo"></div>
+
+        <div class="section">
+          <h3 style="margin:0 0 8px" id="t_profile_edit"> Edit info (Email locked)</h3>
+          <div class="row">
+            <input id="pName" placeholder="First name">
+            <input id="pLname" placeholder="Last name">
+          </div>
+          <div class="row">
+            <input id="pAge" type="number" placeholder="Age">
+            <select id="pGender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="row">
+            <input id="pWeight" type="number" placeholder="Weight (kg)">
+            <input id="pHeight" type="number" placeholder="Height (cm)">
+          </div>
+          <div class="row">
+            <select id="profileGoal">
+              <option value="lose">Lose weight</option>
+              <option value="maintain">Maintain</option>
+              <option value="gain">Gain muscle</option>
+            </select>
+            <select id="langSwitch" onchange="changeLanguage(this.value)">
+              <option value="en">English (ENG)</option>
+              <option value="th">ไทย (THA)</option>
+            </select>
+          </div>
+
+          <button class="bS" id="btnSaveProfile" onclick="saveProfile()">Save Profile</button>
+          <div class="disclaimer" id="t_profile_disclaimer"></div>
+        </div>
+      </div>
+
+      <div id="screenSettings" class="hide">
+        <h3 id="t_settings_title"> Settings</h3>
+
+        <div class="section">
+          <h3 style="margin:0 0 8px" id="t_storage_title"> Storage Info</h3>
+          <div id="storageInfo"></div>
+        </div>
+
+        <div class="section">
+          <h3 style="margin:0 0 8px" id="t_tutorial_title"> Tutorial</h3>
+          <button class="bO" id="btnReplayTutorial" onclick="startUserTutorial(true)">Replay User Tutorial</button>
+          <div class="disclaimer" id="t_settings_disclaimer"></div>
+        </div>
+
+        <button class="bD" id="btnLogout" onclick="logout()">Logout</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= ADMIN PANEL ================= -->
+  <div class="wrap hide" id="adminWrap">
+    <div class="card" id="adminBox">
+      <div class="topbar">
+        <div>
+          <div class="who" id="adminTitle"> Admin Panel (Absolute)</div>
+          <div class="subbar" id="adminLangLine"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select id="adminLangSwitch" style="width:auto" onchange="adminChangeLang(this.value)">
+            <option value="en">ENG</option>
+            <option value="th">TH</option>
+          </select>
+          <button class="bO" style="width:auto;padding:10px 12px;border-radius:14px" id="btnAdminLogoutTop" onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <div class="disclaimer" id="t_admin_disclaimer"></div>
+
+      <div class="section">
+        <div class="row">
+          <input id="adminSearch" placeholder="Search user/email/id...">
+          <button class="bP" onclick="renderAdmin()">Search</button>
+        </div>
+        <div class="disclaimer" id="t_admin_rules"></div>
+      </div>
+
+      <div id="adminStats"></div>
+
+      <div class="adminBox" id="adminData"></div>
+
+      <div class="section">
+        <button class="bO" id="btnReplayAdminTutorial" onclick="startAdminTutorial(true)">Replay Admin Tutorial</button>
+      </div>
+
+      <button class="bD" id="btnAdminLogout" onclick="logout()">Logout</button>
+    </div>
   </div>
 
   <!-- Bottom nav (user only) -->
@@ -605,250 +600,389 @@
 
   <!-- Tutorial overlay -->
   <div class="overlay hide" id="tutorialOverlay">
-    <div class="overlay-card">
-      <div class="overlay-top">
-        <div class="step" id="tutorialStepLabel">Step 1/6</div>
-        <button class="outline" style="width:auto;padding:8px 10px;border-radius:12px" id="btnTutorialSkip" onclick="tutorialSkip()">Skip</button>
+    <div class="modal">
+      <div class="modalTop">
+        <div class="tStep" id="tutorialStepLabel">Step 1/6</div>
+        <button class="bO xBtn" id="btnTutorialSkip" onclick="tutorialSkip()">Skip</button>
       </div>
-      <h3 id="tutorialTitle" style="text-align:left;margin:10px 0 6px"></h3>
+      <h3 id="tutorialTitle" style="margin:10px 0 6px"></h3>
       <p id="tutorialBody" style="margin:0 0 12px"></p>
       <div class="disclaimer" id="tutorialDisclaimer"></div>
 
       <div class="row" style="margin-top:10px">
-        <button class="gray" id="btnTutorialBack" onclick="tutorialBack()">Back</button>
-        <button class="green" id="btnTutorialNext" onclick="tutorialNext()">Next</button>
+        <button class="bG" id="btnTutorialBack" onclick="tutorialBack()">Back</button>
+        <button class="bS" id="btnTutorialNext" onclick="tutorialNext()">Next</button>
       </div>
     </div>
   </div>
 
+  <!-- Admin Edit Modal -->
+  <div class="overlay hide" id="adminEditOverlay">
+    <div class="modal">
+      <div class="modalTop">
+        <div class="modalTitle" id="t_admin_edit_title">Edit user</div>
+        <button class="bO xBtn" onclick="closeAdminEdit()">Close</button>
+      </div>
+
+      <div class="disclaimer" id="t_admin_edit_note"></div>
+
+      <div class="row">
+        <input id="eUser" placeholder="Username">
+        <input id="eEmail" placeholder="Email (Admin can edit)">
+      </div>
+
+      <div class="row">
+        <input id="eName" placeholder="First name">
+        <input id="eLname" placeholder="Last name">
+      </div>
+
+      <div class="row">
+        <input id="eAge" type="number" placeholder="Age">
+        <select id="eGender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <input id="eWeight" type="number" placeholder="Weight (kg)">
+        <input id="eHeight" type="number" placeholder="Height (cm)">
+      </div>
+
+      <div class="row">
+        <select id="eGoal">
+          <option value="lose">Lose</option>
+          <option value="maintain">Maintain</option>
+          <option value="gain">Gain</option>
+        </select>
+        <select id="eLang">
+          <option value="en">EN</option>
+          <option value="th">TH</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <select id="eRole">
+          <option value="user">user</option>
+          <option value="admin">admin</option>
+        </select>
+        <input id="ePass" placeholder="New password (optional)">
+      </div>
+
+      <div class="row">
+        <button class="bP" onclick="adminSaveUser()">Save</button>
+        <button class="bA" onclick="adminForceLogout()">Force Logout</button>
+      </div>
+
+      <div class="row">
+        <button class="bD" onclick="adminDeleteUser()">Delete User</button>
+        <button class="bO" onclick="adminResetPassword()">Reset Password (random)</button>
+      </div>
+
+      <div class="disclaimer" id="adminEditResult"></div>
+    </div>
+  </div>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
 /* =========================================================
-   i18n (ENG/TH)
+   EmailJS SETUP (OTP Email)
+   1) สร้าง EmailJS (ฟรี)
+   2) สร้าง Email Service
+   3) สร้าง Template ที่มีตัวแปร: to_email, otp_code, app_name
+   4) ใส่ค่า 3 ตัวนี้ให้ถูกต้อง
+========================================================= */
+const EMAILJS_PUBLIC_KEY = "d_gKRq39RBdvL8LvK";
+const EMAILJS_SERVICE_ID = "service_z4546zd";
+const EMAILJS_TEMPLATE_ID = "template_qgy9zw9";
+
+/* =========================================================
+   Storage keys
+========================================================= */
+const LS_USERS   = "fitsense_users";
+const LS_UI_LANG = "fitsense_uiLang";
+const LS_SESSION = "fitsense_session"; // remember me session
+
+/* =========================================================
+   i18n (EN/TH) – Minimal but covers key UI
 ========================================================= */
 const I18N = {
   en: {
-    appStudy: "This application and all data shown are for classroom study purposes only.",
-    noMedical: "AI-generated suggestions (not medical advice).",
-    authDis: "Study case only. All accounts and data are fictional/mocked.\nPasswords are stored as plain text for classroom demo (not for real-world use).",
-    adminDis: "Admin access is for academic study purposes only. No real personal data is used. Read-only view.",
-    adminHintTitle: "Admin Access (Hidden)",
-    adminHintBody: "Study hint: you can login with admin account (username: admin, password: admin123).",
-    remember: "Remember me (Auto login)",
-    calorieNote: "* Calories and logs are for educational mock/demo only (not medical advice).",
-    longPress: "Tip: Long-press the Settings title for ~1.2s to reveal Admin hint (study-only).",
-    adminRules: "Admin restrictions: No password access • No export • No editing • Read-only",
-
-    regTitle: "📝 Register",
-    loginTitle: "🔐 Login",
-    forgotTitle: "📧 Reset Password (Mock)",
+    study: "Study case only. This is a classroom demo. Not medical advice.",
+    storage: "Data is stored in your browser (LocalStorage).",
+    regTitle: " Register",
+    regSub: "Create your profile to get AI suggestions",
+    loginTitle: " Login",
+    loginSub: "Welcome back",
+    forgotTitle: " Reset password",
+    forgotSub: "OTP will be sent to your email",
+    remember: "Remember me",
+    goLogin: "Go to Login",
+    goReg: "Create new account",
     btnRegister: "Register",
-    btnGoLogin: "Go to Login",
     btnLogin: "Login",
-    btnForgot: "Forgot password (Mock OTP)",
-    btnGoRegister: "Register",
-    btnSendOTP: "Request OTP",
-    btnReset: "Set new password",
-    btnCancelReset: "Cancel",
+    btnForgot: "Forgot Password (OTP Email)",
+    sendOtp: "Send OTP to Email",
+    reset: "Reset Password",
+    cancel: "Cancel",
     logout: "Logout",
 
-    phUser: "Username",
-    phPass: "Password",
-    phEmail: "Email",
-    phFname: "First name",
-    phLname: "Last name",
-    phAge: "Age",
-    phWeight: "Weight (kg)",
-    phHeight: "Height (cm)",
-
-    tabs: { home:"Home", food:"Food", workout:"Workout", profile:"Profile", settings:"Settings" },
-
-    homeTitle: "🏠 Home",
-    homeDisc: "This app helps plan workouts and manage food calories using AI (study case). Not medical advice.",
-    progressTitle: "📈 Today Overview",
-
-    foodTitle: "🍽 Food & Calories",
-    recalc: "Recalculate",
-    genMeals: "Generate AI Meals",
-    intakeTitle: "➕ Log Intake (Mock)",
-    addIntake: "Add intake",
-    todayLog: "📋 Today intake list",
-    historyTitle: "📊 Daily History",
-    saveGoal: "Save goal",
-
-    workoutTitle: "🏋️ Workout Plan",
-    genWorkout: "Generate AI Workout Plan",
-    regenWorkout: "Regenerate Plan",
-    editTitle: "✍️ Edit Notes (Optional)",
-    saveNotes: "Save Notes",
-
-    profileTitle: "👤 Profile",
-    profileGoal: "🎯 Fitness Goal",
-    saveProfile: "Save Profile",
-    profileDisc: "Profile is stored locally (mock).",
-
-    settingsTitle: "⚙️ Settings",
-    langLabel: "Language",
-    replayTut: "Replay Tutorial",
-    settingsDisc: "Tutorial language follows current app language.",
-
-    // Errors
-    errFill: "Please fill required fields.",
+    // Validation / errors
+    errFillAll: "Please fill every field.",
+    errUserLen: "Username must be at least 3 characters.",
+    errPassRule: "Password must be at least 6 characters and contain at least 1 special character (!@#$...).",
     errDupUser: "Username already exists.",
+    errDupEmail: "Email already exists.",
     errLogin: "Incorrect username or password.",
     errNoEmail: "Email not found.",
     errOtp: "Invalid OTP.",
-    errIntake: "Please input food name and calories.",
-    errGoal: "Please input a valid calorie goal.",
+    errEmailJS: "EmailJS not configured. Please set PUBLIC_KEY / SERVICE_ID / TEMPLATE_ID.",
 
-    // Food text
-    calTarget: "Recommended calorie target",
-    calIntake: "Logged intake today",
-    calRemaining: "Remaining",
-    mealPlanTitle: "AI Meal Plan (Mock)",
-    time: "Time",
-    meal: "Meal",
-    calories: "Calories",
-    total: "Total",
-    breakfast:"Breakfast", lunch:"Lunch", dinner:"Dinner", snack:"Snack",
+    // App
+    homeTitle: "🏠 Home Dashboard",
+    homeDisc: "This dashboard shows your daily target, intake, burned calories and net calories.",
+    kpiTarget: "Target",
+    kpiIntake: "Intake",
+    kpiBurned: "Burned",
+    kpiNet: "Net",
+    kpiRemain: "Remaining",
+    aiInsightTitle: " AI Insight (Mock)",
+    todaySummary: " Today Summary",
 
-    // Workout text
-    weeklyPlan: "Weekly Plan",
-    day: "Day",
-    exercise: "Exercise",
-    sets: "Sets",
-    reps: "Reps",
-    rest: "Rest",
-    seconds: "sec",
+    foodTitle: " Food & Calories",
+    genMeals: "Generate AI Meals",
+    aiWarn: "AI-generated suggestions (not medical advice).",
+    intakeTitle: " Log Intake",
+    add: "Add",
+    history: " Daily History",
+    todayLog: " Today intake list",
+    saveGoal: "Save goal",
 
-    // Tutorials (User 6 steps)
-    tutUserSteps: [
-      { title:"Welcome", body:"This app helps you plan workouts and manage food calories using AI." , step:"Step 1/6", highlight:null },
-      { title:"Navigation Overview", body:"Use bottom tabs: Home (overview), Food (AI meals), Workout (AI plan), Profile (your data), Settings (language & tutorial).", step:"Step 2/6", highlight:"bottomNav" },
-      { title:"Food & Calories", body:"AI recommends meals and estimates calories. You can also log intake to compare vs your target.", step:"Step 3/6", highlight:"tabFood" },
-      { title:"Workout Generator", body:"Enter your level, goal, days per week, and equipment. Then generate or regenerate your weekly plan.", step:"Step 4/6", highlight:"tabWorkout" },
-      { title:"Language Switch", body:"Go to Settings → Language → ENG/TH. All UI and AI messages will switch.", step:"Step 5/6", highlight:"tabSettings" },
-      { title:"Finish", body:"You’re ready to use the app!", step:"Step 6/6", highlight:null }
-    ],
+    workoutTitle: " Workout + Calories Burned",
+    burnTitle: " Log Workout (Burned Calories)",
+    burnNote: "Calories burned is estimated using MET formula (study).",
+    addWorkout: "Add workout",
+    planTitle: " AI Workout Plan (Mock)",
+    genPlan: "Generate Plan",
+    regen: "Regenerate",
+    notes: " Notes",
+    saveNotes: "Save Notes",
 
-    // Tutorials (Admin 5 steps)
-    tutAdminSteps: [
-      { title:"Admin Access Warning", body:"Admin panel is for academic study only. Do not misuse user data.", step:"Step 1/5", highlight:null },
-      { title:"Dashboard Overview", body:"You can view user list and summary statistics (number of users, languages used).", step:"Step 2/5", highlight:"adminStats" },
-      { title:"User Information View", body:"Visible fields: User ID, Username, Email, Selected language, Fitness goal. Data is read-only.", step:"Step 3/5", highlight:"adminData" },
-      { title:"Data Limitations", body:"Restrictions: No password access, no export, no editing.", step:"Step 4/5", highlight:"adminData" },
-      { title:"Exit Admin Mode", body:"Always log out after reviewing data.", step:"Step 5/5", highlight:"btnAdminLogout" }
-    ]
+    profileTitle: " Profile",
+    profileLock: "You can edit your info, but Email cannot be changed (identifier).",
+    saveProfile: "Save Profile",
+    profDisc: "Profile is stored locally (mock).",
+
+    settingsTitle: " Settings",
+    storageTitle: " Storage Info",
+    tutTitle: " Tutorial",
+    replayTut: "Replay User Tutorial",
+    settingsDisc: "Tutorial follows your current language.",
+
+    // Admin
+    adminDis: "Admin has absolute power (study). Can edit/delete/force logout users.",
+    adminRules: "Admin actions are for classroom demo only. Use responsibly.",
+    replayAdminTut: "Replay Admin Tutorial",
+    adminEditTitle: "Edit user",
+    adminEditNote: "Admin can edit all fields including email/role. (Study case)",
   },
 
   th: {
-    appStudy: "แอปนี้และข้อมูลทั้งหมดที่แสดง ใช้เพื่อการเรียนในชั้นเรียนเท่านั้น",
-    noMedical: "คำแนะนำจาก AI (เพื่อการศึกษา ไม่ใช่คำแนะนำทางการแพทย์/โภชนาการ)",
-    authDis: "ตัวอย่างเพื่อการเรียนเท่านั้น บัญชีและข้อมูลทั้งหมดเป็นข้อมูลจำลอง\nรหัสผ่านถูกเก็บแบบข้อความธรรมดาเพื่อสาธิตในชั้นเรียน (ไม่เหมาะกับระบบจริง)",
-    adminDis: "การเข้าถึงหลังบ้านมีไว้เพื่อการศึกษาเท่านั้น ไม่มีการใช้ข้อมูลจริง แสดงผลแบบอ่านอย่างเดียว",
-    adminHintTitle: "ทางเข้าหลังบ้าน (ซ่อนไว้)",
-    adminHintBody: "ทิปสำหรับงานเรียน: ใช้บัญชี admin ในหน้า Login (username: admin, password: admin123)",
-    remember: "จำฉันไว้ (เข้าอัตโนมัติ)",
-    calorieNote: "* แคลอรี่/รายการบันทึกเป็นข้อมูลจำลองเพื่อการเรียนรู้เท่านั้น (ไม่ใช่คำแนะนำทางการแพทย์)",
-    longPress: "ทิป: กดค้างที่หัวข้อ Settings ประมาณ 1.2 วินาที เพื่อแสดงคำใบ้หลังบ้าน (เพื่อการศึกษา)",
-    adminRules: "ข้อจำกัดแอดมิน: ดูรหัสผ่านไม่ได้ • Export ไม่ได้ • แก้ไขไม่ได้ • อ่านอย่างเดียว",
-
-    regTitle: "📝 สมัครสมาชิก",
-    loginTitle: "🔐 เข้าสู่ระบบ",
-    forgotTitle: "📧 รีเซ็ตรหัสผ่าน (จำลอง)",
+    study: "เพื่อการศึกษาเท่านั้น (Study Case) ไม่ใช่คำแนะนำทางการแพทย์/โภชนาการ",
+    storage: "ข้อมูลถูกเก็บในเบราว์เซอร์ของผู้ใช้ (LocalStorage)",
+    regTitle: " สมัครสมาชิก",
+    regSub: "สร้างโปรไฟล์เพื่อรับคำแนะนำจาก AI (จำลอง)",
+    loginTitle: " เข้าสู่ระบบ",
+    loginSub: "ยินดีต้อนรับกลับ",
+    forgotTitle: " รีเซ็ตรหัสผ่าน",
+    forgotSub: "ระบบจะส่ง OTP ไปที่อีเมล",
+    remember: "จำฉันไว้",
+    goLogin: "ไปหน้าเข้าสู่ระบบ",
+    goReg: "สมัครสมาชิก",
     btnRegister: "สมัครสมาชิก",
-    btnGoLogin: "ไปหน้าเข้าสู่ระบบ",
     btnLogin: "เข้าสู่ระบบ",
-    btnForgot: "ลืมรหัสผ่าน (OTP จำลอง)",
-    btnGoRegister: "สมัครสมาชิก",
-    btnSendOTP: "ขอ OTP",
-    btnReset: "ตั้งรหัสใหม่",
-    btnCancelReset: "ยกเลิก",
+    btnForgot: "ลืมรหัสผ่าน (OTP ส่งอีเมล)",
+    sendOtp: "ส่ง OTP เข้าอีเมล",
+    reset: "ตั้งรหัสใหม่",
+    cancel: "ยกเลิก",
     logout: "ออกจากระบบ",
 
-    phUser: "ชื่อผู้ใช้ (Username)",
-    phPass: "รหัสผ่าน",
-    phEmail: "อีเมล",
-    phFname: "ชื่อ",
-    phLname: "นามสกุล",
-    phAge: "อายุ",
-    phWeight: "น้ำหนัก (กก.)",
-    phHeight: "ส่วนสูง (ซม.)",
-
-    tabs: { home:"หน้าแรก", food:"อาหาร", workout:"ออกกำลัง", profile:"โปรไฟล์", settings:"ตั้งค่า" },
-
-    homeTitle: "🏠 หน้าแรก",
-    homeDisc: "คำเตือนเพื่อการศึกษา: แอปนี้ช่วยวางแผนออกกำลังและจัดการแคลอรีด้วย AI ไม่ใช่คำแนะนำทางการแพทย์",
-    progressTitle: "📈 สรุปวันนี้",
-
-    foodTitle: "🍽 อาหาร & แคลอรี",
-    recalc: "คำนวณใหม่",
-    genMeals: "สร้างเมนูอาหารด้วย AI",
-    intakeTitle: "➕ บันทึกแคลอรีที่กิน (จำลอง)",
-    addIntake: "เพิ่มรายการ",
-    todayLog: "📋 รายการที่บันทึกวันนี้",
-    historyTitle: "📊 ประวัติรายวัน",
-    saveGoal: "บันทึกเป้า",
-
-    workoutTitle: "🏋️ แผนออกกำลังกาย",
-    genWorkout: "สร้างแผนด้วย AI",
-    regenWorkout: "สุ่ม/สร้างใหม่",
-    editTitle: "✍️ แก้ไขโน้ต (ถ้าต้องการ)",
-    saveNotes: "บันทึกโน้ต",
-
-    profileTitle: "👤 โปรไฟล์",
-    profileGoal: "🎯 เป้าหมายฟิตเนส",
-    saveProfile: "บันทึกโปรไฟล์",
-    profileDisc: "ข้อมูลโปรไฟล์เก็บในเครื่อง (ข้อมูลจำลอง)",
-
-    settingsTitle: "⚙️ ตั้งค่า",
-    langLabel: "ภาษา",
-    replayTut: "เล่น Tutorial อีกครั้ง",
-    settingsDisc: "ภาษา Tutorial จะตามภาษาปัจจุบันของแอป",
-
-    errFill: "กรุณากรอกข้อมูลที่จำเป็นให้ครบ",
+    errFillAll: "กรุณากรอกข้อมูลให้ครบทุกช่อง",
+    errUserLen: "Username ต้องมีอย่างน้อย 3 ตัวอักษร",
+    errPassRule: "รหัสผ่านต้องอย่างน้อย 6 ตัว และมีอักขระพิเศษอย่างน้อย 1 ตัว (!@#$...)",
     errDupUser: "Username ซ้ำ",
+    errDupEmail: "Email ซ้ำ",
     errLogin: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
     errNoEmail: "ไม่พบอีเมลนี้",
     errOtp: "OTP ไม่ถูกต้อง",
-    errIntake: "กรุณากรอกชื่ออาหารและแคลอรี",
-    errGoal: "กรุณากรอกเป้าหมายแคลอรีให้ถูกต้อง",
+    errEmailJS: "ยังไม่ได้ตั้งค่า EmailJS กรุณาใส่ PUBLIC_KEY / SERVICE_ID / TEMPLATE_ID",
 
-    calTarget: "เป้าหมายแคลอรีที่แนะนำ",
-    calIntake: "แคลอรีที่บันทึกวันนี้",
-    calRemaining: "คงเหลือ",
-    mealPlanTitle: "ตารางอาหารจาก AI (จำลอง)",
-    time: "มื้อ",
-    meal: "อาหาร",
-    calories: "แคลอรี",
-    total: "รวม",
-    breakfast:"เช้า", lunch:"เที่ยง", dinner:"เย็น", snack:"ว่าง",
+    homeTitle: " หน้าแรก (Dashboard)",
+    homeDisc: "สรุปเป้าหมายแคลอรี แคลอรีที่กิน เผาผลาญ และคงเหลือในวันนี้",
+    kpiTarget: "เป้าหมาย",
+    kpiIntake: "กินแล้ว",
+    kpiBurned: "เผาไป",
+    kpiNet: "สุทธิ",
+    kpiRemain: "คงเหลือ",
+    aiInsightTitle: " คำแนะนำ AI (จำลอง)",
+    todaySummary: " สรุปวันนี้",
 
-    weeklyPlan: "แผนรายสัปดาห์",
-    day: "วัน",
-    exercise: "ท่าออกกำลัง",
-    sets: "เซ็ต",
-    reps: "ครั้ง",
-    rest: "พัก",
-    seconds: "วินาที",
+    foodTitle: "🍽 อาหาร & แคลอรี",
+    genMeals: "สร้างเมนูอาหารด้วย AI",
+    aiWarn: "คำแนะนำจาก AI (เพื่อการศึกษา ไม่ใช่คำแนะนำทางการแพทย์)",
+    intakeTitle: " บันทึกแคลอรีที่กิน",
+    add: "เพิ่มรายการ",
+    history: " ประวัติรายวัน",
+    todayLog: " รายการวันนี้",
+    saveGoal: "บันทึกเป้า",
 
-    tutUserSteps: [
-      { title:"ยินดีต้อนรับ", body:"แอปนี้ช่วยวางแผนออกกำลังกายและจัดการแคลอรีอาหารด้วย AI", step:"ขั้นที่ 1/6", highlight:null },
-      { title:"ภาพรวมเมนู", body:"ใช้แท็บล่าง: หน้าแรก (สรุป), อาหาร (เมนู AI), ออกกำลัง (แผน AI), โปรไฟล์ (ข้อมูล), ตั้งค่า (ภาษา & Tutorial)", step:"ขั้นที่ 2/6", highlight:"bottomNav" },
-      { title:"หน้าอาหาร & แคลอรี", body:"AI จะแนะนำอาหารและประเมินแคลอรี คุณสามารถบันทึกแคลอรีที่กินเพื่อเทียบกับเป้าหมายได้", step:"ขั้นที่ 3/6", highlight:"tabFood" },
-      { title:"สร้างแผนออกกำลังกาย", body:"ระบุระดับ เป้าหมาย จำนวนวัน และอุปกรณ์ จากนั้นสร้าง/สร้างใหม่แผนรายสัปดาห์ได้", step:"ขั้นที่ 4/6", highlight:"tabWorkout" },
-      { title:"เปลี่ยนภาษา", body:"ไปที่ ตั้งค่า → ภาษา → ENG/TH ข้อความทั้งหมดรวมถึงข้อความจาก AI จะเปลี่ยนตาม", step:"ขั้นที่ 5/6", highlight:"tabSettings" },
-      { title:"เสร็จสิ้น", body:"พร้อมใช้งานแล้ว!", step:"ขั้นที่ 6/6", highlight:null }
-    ],
+    workoutTitle: " ออกกำลัง + แคลอรีที่เผา",
+    burnTitle: " บันทึกการออกกำลัง (เผาแคลอรี)",
+    burnNote: "คำนวณเผาแคลอรีด้วยสูตร MET (เพื่อการศึกษา)",
+    addWorkout: "เพิ่มการออกกำลัง",
+    planTitle: " แผนออกกำลังกาย AI (จำลอง)",
+    genPlan: "สร้างแผน",
+    regen: "สุ่ม/สร้างใหม่",
+    notes: " โน้ต",
+    saveNotes: "บันทึกโน้ต",
 
-    tutAdminSteps: [
-      { title:"คำเตือนการเข้าถึงหลังบ้าน", body:"หลังบ้านมีไว้เพื่อการศึกษาเท่านั้น ห้ามนำข้อมูลไปใช้ผิดวัตถุประสงค์", step:"ขั้นที่ 1/5", highlight:null },
-      { title:"ภาพรวม Dashboard", body:"ดูรายชื่อผู้ใช้และสถิติสรุป (เช่น จำนวนผู้ใช้/ภาษา)", step:"ขั้นที่ 2/5", highlight:"adminStats" },
-      { title:"ดูข้อมูลผู้ใช้", body:"ฟิลด์ที่เห็นได้: User ID, Username, Email, ภาษา, เป้าหมายฟิตเนส (อ่านอย่างเดียว)", step:"ขั้นที่ 3/5", highlight:"adminData" },
-      { title:"ข้อจำกัดข้อมูล", body:"ข้อห้าม: ดูรหัสผ่านไม่ได้, Export ไม่ได้, แก้ไขข้อมูลไม่ได้", step:"ขั้นที่ 4/5", highlight:"adminData" },
-      { title:"ออกจากโหมดแอดมิน", body:"ควรออกจากระบบทุกครั้งหลังตรวจสอบข้อมูล", step:"ขั้นที่ 5/5", highlight:"btnAdminLogout" }
-    ]
+    profileTitle: " โปรไฟล์",
+    profileLock: "แก้ข้อมูลได้ แต่แก้ Email ไม่ได้ (ใช้เป็นตัวระบุตัวตน)",
+    saveProfile: "บันทึกโปรไฟล์",
+    profDisc: "ข้อมูลเก็บในเครื่อง (LocalStorage) เพื่อการศึกษา",
+
+    settingsTitle: " ตั้งค่า",
+    storageTitle: " ที่เก็บข้อมูล",
+    tutTitle: " Tutorial",
+    replayTut: "เล่น Tutorial ผู้ใช้",
+    settingsDisc: "ภาษา Tutorial จะตามภาษาปัจจุบัน",
+
+    adminDis: "แอดมินมีสิทธิ์สูงสุด (เพื่อการศึกษา) แก้ไข/ลบ/บังคับออกจากระบบได้",
+    adminRules: "คำเตือน: การกระทำของแอดมินใช้เพื่อการเรียนเท่านั้น",
+    replayAdminTut: "เล่น Tutorial แอดมิน",
+    adminEditTitle: "แก้ไขผู้ใช้",
+    adminEditNote: "แอดมินแก้ไขได้ทุกอย่างรวมถึง email/role (Study case)",
   }
 };
+
+/* =========================================================
+   Helpers
+========================================================= */
+function getUiLang(){ return localStorage.getItem(LS_UI_LANG) || "en"; }
+function setUiLang(lang){ localStorage.setItem(LS_UI_LANG, lang); }
+
+function uid(){ return "U" + Math.random().toString(16).slice(2,10).toUpperCase(); }
+function todayKey(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function escapeHtml(s){
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+function hasSpecialChar(pw){ return /[^A-Za-z0-9]/.test(pw); } // unique character => special char
+
+/* =========================================================
+   Load/Save Users
+========================================================= */
+function loadUsers(){
+  try { return JSON.parse(localStorage.getItem(LS_USERS) || "[]"); }
+  catch { return []; }
+}
+function saveUsers(){
+  localStorage.setItem(LS_USERS, JSON.stringify(users));
+}
+function sanitizeUsers(list){
+  if(!Array.isArray(list)) return [];
+  const out=[];
+  const seen=new Set();
+  for(const u of list){
+    if(!u || typeof u!=="object") continue;
+    if(typeof u.user!=="string" || !u.user.trim()) continue;
+    if(typeof u.pass!=="string") continue;
+    const key=u.user.trim().toLowerCase();
+    if(seen.has(key)) continue;
+    seen.add(key);
+
+    out.push({
+      id: u.id || uid(),
+      user: u.user.trim(),
+      email: String(u.email||"").trim(),
+      pass: u.pass,
+      name: String(u.name||"").trim(),
+      lname: String(u.lname||"").trim(),
+      age: Number(u.age||0),
+      gender: u.gender || "other",
+      weight: Number(u.weight||0),
+      height: Number(u.height||0),
+      goal: u.goal || "maintain",
+      lang: u.lang || "en",
+      role: (u.role==="admin") ? "admin" : "user",
+      history: (u.history && typeof u.history==="object") ? u.history : {},
+      workoutPlan: u.workoutPlan || null,
+      workoutNotes: u.workoutNotes || "",
+      firstLaunchDone: !!u.firstLaunchDone,
+      firstAdminTutDone: !!u.firstAdminTutDone,
+      forceLogoutVersion: Number(u.forceLogoutVersion||0),
+      online: !!u.online
+    });
+  }
+  return out;
+}
+
+let users = sanitizeUsers(loadUsers());
+let currentUser = null;
+let otpTemp = null;
+let otpEmail = null;
+
+/* Seed admin (ไม่โชว์บนหน้าเว็บ) */
+function ensureAdmin(){
+  if(!users.find(u => u.user.toLowerCase()==="admin")){
+    users.push({
+      id:"ADMIN-0001",
+      user:"admin",
+      email:"admin@local",
+      pass:"Admin@123", // ตรงเงื่อนไข password
+      name:"Admin",
+      lname:"System",
+      age:0, gender:"other", weight:0, height:0,
+      goal:"maintain",
+      lang:"en",
+      role:"admin",
+      history:{},
+      workoutPlan:null,
+      workoutNotes:"",
+      firstLaunchDone:true,
+      firstAdminTutDone:false,
+      forceLogoutVersion:0,
+      online:false
+    });
+    users = sanitizeUsers(users);
+    saveUsers();
+  }
+}
+ensureAdmin();
+
+/* =========================================================
+   EmailJS init
+========================================================= */
+function emailJsReady(){
+  return EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID
+    && !EMAILJS_PUBLIC_KEY.includes("YOUR_")
+    && !EMAILJS_SERVICE_ID.includes("YOUR_")
+    && !EMAILJS_TEMPLATE_ID.includes("YOUR_");
+}
+try{
+  if(emailJsReady()){
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+}catch(e){
+  // ignore; will show error later
+}
 
 /* =========================================================
    DOM refs
@@ -856,12 +990,10 @@ const I18N = {
 const registerBox = document.getElementById("registerBox");
 const loginBox = document.getElementById("loginBox");
 const forgotBox = document.getElementById("forgotBox");
-const appBox = document.getElementById("appBox");
-const adminBox = document.getElementById("adminBox");
-const bottomNav = document.getElementById("bottomNav");
 
-const welcome = document.getElementById("welcome");
-const topLang = document.getElementById("topLang");
+const appWrap = document.getElementById("appWrap");
+const adminWrap = document.getElementById("adminWrap");
+const bottomNav = document.getElementById("bottomNav");
 
 const screenHome = document.getElementById("screenHome");
 const screenFood = document.getElementById("screenFood");
@@ -869,439 +1001,293 @@ const screenWorkout = document.getElementById("screenWorkout");
 const screenProfile = document.getElementById("screenProfile");
 const screenSettings = document.getElementById("screenSettings");
 
-const aiMealTable = document.getElementById("aiMealTable");
-const historyTable = document.getElementById("historyTable");
-const calorieSummary = document.getElementById("calorieSummary");
-const intakeLogTable = document.getElementById("intakeLogTable");
-
-const workoutPlan = document.getElementById("workoutPlan");
-const workoutNotes = document.getElementById("workoutNotes");
-
-/* tutorial */
 const tutorialOverlay = document.getElementById("tutorialOverlay");
 const tutorialStepLabel = document.getElementById("tutorialStepLabel");
 const tutorialTitle = document.getElementById("tutorialTitle");
 const tutorialBody = document.getElementById("tutorialBody");
 const tutorialDisclaimer = document.getElementById("tutorialDisclaimer");
-const btnTutorialSkip = document.getElementById("btnTutorialSkip");
 const btnTutorialBack = document.getElementById("btnTutorialBack");
 const btnTutorialNext = document.getElementById("btnTutorialNext");
+const btnTutorialSkip = document.getElementById("btnTutorialSkip");
 
-/* admin */
-const adminData = document.getElementById("adminData");
-const adminStats = document.getElementById("adminStats");
-const adminLang = document.getElementById("adminLang");
-const adminSearch = document.getElementById("adminSearch");
+const adminEditOverlay = document.getElementById("adminEditOverlay");
 
 /* =========================================================
-   Storage
+   i18n apply
 ========================================================= */
-const LS_USERS = "users";
-const LS_UI_LANG = "uiLang";
-const LS_SESSION_USER = "session_user"; // remember me username
-
-function uid() {
-  return "U" + Math.random().toString(16).slice(2, 10).toUpperCase();
-}
-function save(){ localStorage.setItem(LS_USERS, JSON.stringify(users)); }
-function loadUsers(){ try { return JSON.parse(localStorage.getItem(LS_USERS) || "[]"); } catch { return []; } }
-
-function getUiLang(){ return localStorage.getItem(LS_UI_LANG) || "en"; }
-function setUiLang(lang){ localStorage.setItem(LS_UI_LANG, lang); }
-
-/* sanitize (stability) */
-function sanitizeUsers(list){
-  if(!Array.isArray(list)) return [];
-  const cleaned = [];
-  for(const u of list){
-    if(!u || typeof u !== "object") continue;
-    if(typeof u.user !== "string" || !u.user.trim()) continue;
-    if(typeof u.pass !== "string") continue;
-
-    cleaned.push({
-      id: u.id || uid(),
-      user: u.user.trim(),
-      pass: u.pass,
-      email: (u.email || "").trim(),
-      name: (u.name || "").trim(),
-      lname: (u.lname || "").trim(),
-      age: Number(u.age || 0),
-      gender: u.gender || "other",
-      weight: Number(u.weight || 0),
-      height: Number(u.height || 0),
-      goal: u.goal || "maintain",
-      lang: u.lang || "en",
-      role: (u.role === "admin") ? "admin" : "user",
-      history: (u.history && typeof u.history === "object") ? u.history : {},
-      workoutPlan: u.workoutPlan || null,
-      workoutNotes: u.workoutNotes || "",
-      firstLaunchDone: !!u.firstLaunchDone,
-      firstAdminTutDone: !!u.firstAdminTutDone,
-      online: !!u.online
-    });
-  }
-
-  // dedup username (case-insensitive)
-  const seen = new Set();
-  const out = [];
-  for(const u of cleaned){
-    const key = u.user.toLowerCase();
-    if(seen.has(key)) continue;
-    seen.add(key);
-    out.push(u);
-  }
-  return out;
-}
-
-let users = sanitizeUsers(loadUsers());
-let currentUser = null;
-
-let otpTemp = null;
-let otpEmail = null;
-
-/* seed admin */
-if (!users.find(u => u.user.toLowerCase() === "admin")) {
-  users.push({
-    id: "ADMIN-0001",
-    user: "admin",
-    pass: "admin123",
-    email: "admin@local",
-    name: "Admin",
-    lname: "System",
-    age: 0,
-    gender: "other",
-    weight: 0,
-    height: 0,
-    goal: "maintain",
-    lang: "en",
-    role: "admin",
-    history: {},
-    workoutPlan: null,
-    workoutNotes: "",
-    firstLaunchDone: true,
-    firstAdminTutDone: false,
-    online: false
-  });
-  save();
-}
-
-/* =========================================================
-   Helpers
-========================================================= */
-function todayKey(){
-  const d = new Date();
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth()+1).padStart(2,"0");
-  const dd = String(d.getDate()).padStart(2,"0");
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-function t(key) {
-  const lang = (currentUser?.lang) || getUiLang() || "en";
+function t(key){
+  const lang = currentUser?.lang || getUiLang() || "en";
   const dict = I18N[lang] || I18N.en;
-
-  const parts = key.split(".");
-  let cur = dict;
-  for (const p of parts) cur = (cur && cur[p] !== undefined) ? cur[p] : null;
-  return (cur !== null && cur !== undefined) ? cur : key;
+  return dict[key] ?? key;
 }
 
-function setText(id, text) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = text;
+function applyStaticI18n(){
+  const uiLang = getUiLang();
+  const dict = I18N[uiLang] || I18N.en;
+
+  // sync dropdowns
+  document.getElementById("regLangSwitch").value = uiLang;
+  document.getElementById("loginLangSwitch").value = uiLang;
+  document.getElementById("forgotLangSwitch").value = uiLang;
+
+  // register text
+  document.getElementById("t_reg_title").innerText = dict.regTitle;
+  document.getElementById("t_reg_sub").innerText = dict.regSub;
+  document.getElementById("btnRegister").innerText = dict.btnRegister;
+  document.getElementById("btnGoLogin").innerText = dict.goLogin;
+
+  // login text
+  document.getElementById("t_login_title").innerText = dict.loginTitle;
+  document.getElementById("t_login_sub").innerText = dict.loginSub;
+  document.getElementById("t_remember").innerText = dict.remember;
+  document.getElementById("btnLogin").innerText = dict.btnLogin;
+  document.getElementById("btnForgot").innerText = dict.btnForgot;
+  document.getElementById("btnGoRegister").innerText = dict.goReg;
+
+  // forgot
+  document.getElementById("t_forgot_title").innerText = dict.forgotTitle;
+  document.getElementById("t_forgot_sub").innerText = dict.forgotSub;
+  document.getElementById("btnSendOTP").innerText = dict.sendOtp;
+  document.getElementById("btnReset").innerText = dict.reset;
+  document.getElementById("btnCancelReset").innerText = dict.cancel;
+
+  // disclaimers
+  document.getElementById("t_auth_disclaimer").innerText = `${dict.study}\n${dict.storage}\n(Admin account exists for demo: admin / Admin@123)`;
+  document.getElementById("t_auth_disclaimer2").innerText = `${dict.study}\n${dict.storage}`;
+  document.getElementById("t_otp_disclaimer").innerText = `${dict.study}\n${dict.storage}`;
+
+  // placeholders (minor)
+  document.getElementById("rUser").placeholder = (uiLang==="th") ? "Username (อย่างน้อย 3 ตัว)" : "Username (≥ 3 chars)";
+  document.getElementById("rPass").placeholder = (uiLang==="th") ? "Password (≥ 6 + อักขระพิเศษ)" : "Password (≥ 6 + special char)";
 }
 
+/* =========================================================
+   Screens show/hide
+========================================================= */
 function hideAll(){
   registerBox.classList.add("hide");
   loginBox.classList.add("hide");
   forgotBox.classList.add("hide");
-  appBox.classList.add("hide");
-  adminBox.classList.add("hide");
+  appWrap.classList.add("hide");
+  adminWrap.classList.add("hide");
   bottomNav.classList.add("hide");
 }
-
-/* FIX: do NOT force EN */
-function showLogin(){ hideAll(); loginBox.classList.remove("hide"); applyStaticI18n(getUiLang()); }
-function showRegister(){ hideAll(); registerBox.classList.remove("hide"); applyStaticI18n(getUiLang()); }
-function showForgot(){ hideAll(); forgotBox.classList.remove("hide"); applyStaticI18n(getUiLang()); }
-
-/* =========================================================
-   Apply i18n (static auth uses uiLang)
-========================================================= */
-function applyStaticI18n(forceLang){
-  const lang = forceLang || getUiLang();
-  const dict = I18N[lang] || I18N.en;
-
-  setText("t_reg_title", dict.regTitle);
-  setText("t_login_title", dict.loginTitle);
-  setText("t_forgot_title", dict.forgotTitle);
-
-  document.getElementById("rUser").placeholder = dict.phUser;
-  document.getElementById("rPass").placeholder = dict.phPass;
-  document.getElementById("rEmail").placeholder = dict.phEmail;
-  document.getElementById("rName").placeholder = dict.phFname;
-  document.getElementById("rLname").placeholder = dict.phLname;
-  document.getElementById("rAge").placeholder = dict.phAge;
-  document.getElementById("rWeight").placeholder = dict.phWeight;
-  document.getElementById("rHeight").placeholder = dict.phHeight;
-
-  document.getElementById("lUser").placeholder = dict.phUser;
-  document.getElementById("lPass").placeholder = dict.phPass;
-  document.getElementById("fEmail").placeholder = dict.phEmail;
-  document.getElementById("fOTP").placeholder = "OTP";
-  document.getElementById("fNewPass").placeholder = (lang === "th") ? "รหัสใหม่" : "New password";
-
-  setText("btnRegister", dict.btnRegister);
-  setText("btnGoLogin", dict.btnGoLogin);
-  setText("btnLogin", dict.btnLogin);
-  setText("btnForgot", dict.btnForgot);
-  setText("btnGoRegister", dict.btnGoRegister);
-  setText("btnSendOTP", dict.btnSendOTP);
-  setText("btnReset", dict.btnReset);
-  setText("btnCancelReset", dict.btnCancelReset);
-
-  setText("t_disclaimer_auth", `${dict.authDis}\n${dict.appStudy}`);
-  setText("t_disclaimer_auth2", `${dict.authDis}\n${dict.appStudy}`);
-  setText("t_disclaimer_otp", `${dict.authDis}\n${dict.appStudy}`);
-
-  setText("t_remember", dict.remember);
-
-  const rLang = document.getElementById("rLang");
-  if (rLang && (rLang.value !== lang)) rLang.value = lang;
+function showRegister(){
+  hideAll();
+  registerBox.classList.remove("hide");
+  applyStaticI18n();
+}
+function showLogin(){
+  hideAll();
+  loginBox.classList.remove("hide");
+  applyStaticI18n();
+}
+function showForgot(){
+  hideAll();
+  forgotBox.classList.remove("hide");
+  applyStaticI18n();
 }
 
 /* =========================================================
-   Auth
+   Register validation (ตามที่ครูสั่ง)
 ========================================================= */
+function validateRegisterForm(){
+  const uiLang = getUiLang();
+  const dict = I18N[uiLang] || I18N.en;
+
+  const u = document.getElementById("rUser").value.trim();
+  const e = document.getElementById("rEmail").value.trim();
+  const p = document.getElementById("rPass").value.trim();
+  const name = document.getElementById("rName").value.trim();
+  const lname = document.getElementById("rLname").value.trim();
+  const age = document.getElementById("rAge").value.trim();
+  const gender = document.getElementById("rGender").value;
+  const weight = document.getElementById("rWeight").value.trim();
+  const height = document.getElementById("rHeight").value.trim();
+  const goal = document.getElementById("rGoal").value;
+  const lang = document.getElementById("rLang").value;
+
+  // Must fill every field
+  if(!u||!e||!p||!name||!lname||!age||!gender||!weight||!height||!goal||!lang){
+    alert(dict.errFillAll); return null;
+  }
+  if(u.length < 3){ alert(dict.errUserLen); return null; }
+  if(p.length < 6 || !hasSpecialChar(p)){ alert(dict.errPassRule); return null; }
+
+  if(users.find(x => x.user.toLowerCase() === u.toLowerCase())){ alert(dict.errDupUser); return null; }
+  if(users.find(x => (x.email||"").toLowerCase() === e.toLowerCase())){ alert(dict.errDupEmail); return null; }
+
+  return {
+    user: u, email: e, pass: p,
+    name, lname,
+    age: Number(age), gender,
+    weight: Number(weight), height: Number(height),
+    goal, lang
+  };
+}
+
 function register(){
-  const rUser = document.getElementById("rUser").value.trim();
-  const rPass = document.getElementById("rPass").value.trim();
-  const rEmail = document.getElementById("rEmail").value.trim();
+  const data = validateRegisterForm();
+  if(!data) return;
 
-  const rName = document.getElementById("rName").value.trim();
-  const rLname = document.getElementById("rLname").value.trim();
-  const rAge = Number(document.getElementById("rAge").value || 0);
-  const rGender = document.getElementById("rGender").value;
-  const rWeight = Number(document.getElementById("rWeight").value || 0);
-  const rHeight = Number(document.getElementById("rHeight").value || 0);
-  const rGoal = document.getElementById("rGoal").value;
-  const rLang = document.getElementById("rLang").value;
-
-  setUiLang(rLang);
-  applyStaticI18n(rLang);
-
-  if(!rUser || !rPass || !rEmail){ alert(I18N[rLang].errFill); return; }
-  if(users.find(u => u.user.toLowerCase() === rUser.toLowerCase())){ alert(I18N[rLang].errDupUser); return; }
+  // register page language switch => set UI language immediately
+  setUiLang(document.getElementById("regLangSwitch").value);
 
   users.push({
     id: uid(),
-    user: rUser,
-    pass: rPass,
-    email: rEmail,
-    name: rName || rUser,
-    lname: rLname || "",
-    age: rAge || 0,
-    gender: rGender,
-    weight: rWeight || 0,
-    height: rHeight || 0,
-    goal: rGoal,
-    lang: rLang,
+    user: data.user,
+    email: data.email,
+    pass: data.pass,
+    name: data.name,
+    lname: data.lname,
+    age: data.age,
+    gender: data.gender,
+    weight: data.weight,
+    height: data.height,
+    goal: data.goal,
+    lang: data.lang,
     role: "user",
     history: {},
     workoutPlan: null,
     workoutNotes: "",
     firstLaunchDone: false,
     firstAdminTutDone: false,
+    forceLogoutVersion: 0,
     online: false
   });
 
   users = sanitizeUsers(users);
-  save();
-  alert(rLang === "th" ? "สมัครสมาชิกสำเร็จ ✅" : "Registered successfully ✅");
+  saveUsers();
+
+  alert(getUiLang()==="th" ? "สมัครสมาชิกสำเร็จ ✅" : "Registered ✅");
   showLogin();
 }
 
+/* =========================================================
+   Session + Force Logout (Local-only)
+========================================================= */
+function setSession(user, remember){
+  const session = {
+    username: user.user,
+    forceLogoutVersion: user.forceLogoutVersion || 0,
+    ts: Date.now()
+  };
+  if(remember) localStorage.setItem(LS_SESSION, JSON.stringify(session));
+  else localStorage.removeItem(LS_SESSION);
+}
+
+function clearSession(){
+  localStorage.removeItem(LS_SESSION);
+}
+
+function checkForcedLogout(){
+  // If admin forced logout, user's forceLogoutVersion will differ.
+  const raw = localStorage.getItem(LS_SESSION);
+  if(!raw || !currentUser) return;
+  try{
+    const s = JSON.parse(raw);
+    if((s.forceLogoutVersion ?? 0) !== (currentUser.forceLogoutVersion ?? 0)){
+      alert(currentUser.lang==="th" ? "ถูกบังคับออกจากระบบโดยแอดมิน" : "You were forced logged out by admin.");
+      logout(true);
+    }
+  }catch{}
+}
+
+/* =========================================================
+   Login/Logout
+========================================================= */
 function login(){
   const uiLang = getUiLang();
+  const dict = I18N[uiLang] || I18N.en;
+
   const uName = document.getElementById("lUser").value.trim();
   const uPass = document.getElementById("lPass").value.trim();
 
   const u = users.find(x => x.user.toLowerCase() === uName.toLowerCase() && x.pass === uPass);
-  if(!u){ alert(I18N[uiLang].errLogin); return; }
+  if(!u){ alert(dict.errLogin); return; }
 
   currentUser = u;
   currentUser.online = true;
+
+  // Set UI language based on user profile
   setUiLang(currentUser.lang);
-  save();
+  saveUsers();
 
-  // remember me
-  const remember = document.getElementById("rememberMe").checked;
-  if(remember) localStorage.setItem(LS_SESSION_USER, currentUser.user);
-  else localStorage.removeItem(LS_SESSION_USER);
-
-  hideAll();
+  setSession(currentUser, document.getElementById("rememberMe").checked);
 
   if(currentUser.role === "admin"){
-    adminBox.classList.remove("hide");
-    adminLang.innerText = `Language: ${currentUser.lang.toUpperCase()}`;
-    applyAppI18n();
-    renderAdmin();
-    startAdminTutorial(false);
-  } else {
-    appBox.classList.remove("hide");
-    bottomNav.classList.remove("hide");
+    bootAdmin();
+  }else{
     bootUserApp();
   }
 }
 
-function logout(){
-  if(currentUser) currentUser.online = false;
-  save();
-  localStorage.removeItem(LS_SESSION_USER);
-  location.reload();
-}
-
-/* OTP mock */
-function sendOTP(){
-  const lang = getUiLang();
-  const email = document.getElementById("fEmail").value.trim();
-  const u = users.find(x => x.email.toLowerCase() === email.toLowerCase());
-  if(!u){ alert(I18N[lang].errNoEmail); return; }
-  otpTemp = Math.floor(100000 + Math.random() * 900000);
-  otpEmail = u.email;
-  alert((lang === "th" ? "OTP (จำลอง): " : "OTP (Mock): ") + otpTemp);
-}
-function resetPassword(){
-  const lang = getUiLang();
-  const otp = document.getElementById("fOTP").value.trim();
-  const newPass = document.getElementById("fNewPass").value.trim();
-  if(!otpTemp || otp !== String(otpTemp)){ alert(I18N[lang].errOtp); return; }
-  const u = users.find(x => x.email === otpEmail);
-  if(u) u.pass = newPass;
-  otpTemp = null; otpEmail = null;
-  save();
-  alert(lang === "th" ? "เปลี่ยนรหัสผ่านแล้ว ✅" : "Password updated ✅");
-  showLogin();
+function logout(silent=false){
+  if(currentUser){
+    currentUser.online = false;
+    saveUsers();
+  }
+  clearSession();
+  currentUser = null;
+  if(!silent) location.reload();
+  else location.reload();
 }
 
 /* =========================================================
-   App boot / i18n
+   Forgot Password - Email OTP (EmailJS)
 ========================================================= */
-function bootUserApp(){
-  welcome.innerText = (currentUser.lang === "th") ? `สวัสดี ${currentUser.name}` : `Hello ${currentUser.name}`;
-  topLang.innerText = `Language: ${currentUser.lang.toUpperCase()}`;
-  document.getElementById("langSwitch").value = currentUser.lang;
+async function sendOTP(){
+  const uiLang = getUiLang();
+  const dict = I18N[uiLang] || I18N.en;
 
-  applyAppI18n();
-  ensureTodayHistory();
-  goTab("home", true);
-  startUserTutorial(false);
-}
+  const email = document.getElementById("fEmail").value.trim();
+  const u = users.find(x => (x.email||"").toLowerCase() === email.toLowerCase());
+  if(!u){ alert(dict.errNoEmail); return; }
 
-function applyAppI18n(){
-  // tabs
-  document.getElementById("tabHome").innerText = t("tabs.home");
-  document.getElementById("tabFood").innerText = t("tabs.food");
-  document.getElementById("tabWorkout").innerText = t("tabs.workout");
-  document.getElementById("tabProfile").innerText = t("tabs.profile");
-  document.getElementById("tabSettings").innerText = t("tabs.settings");
+  otpTemp = Math.floor(100000 + Math.random()*900000);
+  otpEmail = u.email;
 
-  // headings
-  setText("t_home_title", t("homeTitle"));
-  setText("t_home_disclaimer", `${t("homeDisc")}\n${t("appStudy")}`);
-  setText("t_progress_title", t("progressTitle"));
-
-  setText("t_food_title", t("foodTitle"));
-  setText("btnRecalcTarget", t("recalc"));
-  setText("btnGenMeals", t("genMeals"));
-  setText("t_ai_disclaimer", `${t("noMedical")} • ${t("appStudy")}`);
-
-  setText("t_intake_title", t("intakeTitle"));
-  document.getElementById("intakeName").placeholder = (currentUser.lang === "th") ? "ชื่ออาหาร" : "Food name";
-  document.getElementById("intakeCal").placeholder = (currentUser.lang === "th") ? "แคลอรี" : "Calories";
-  setText("btnAddIntake", t("addIntake"));
-  setText("t_today_log", t("todayLog"));
-  setText("t_history_title", t("historyTitle"));
-  setText("btnSaveManualGoal", t("saveGoal"));
-  document.getElementById("manualGoal").placeholder = (currentUser.lang === "th")
-    ? "ตั้งเป้า kcal/วัน (เช่น 1800)"
-    : "Set goal kcal/day (e.g., 1800)";
-  setText("t_calorie_note", `${t("calorieNote")}\n${t("noMedical")}`);
-
-  setText("t_workout_title", t("workoutTitle"));
-  setText("btnGenWorkout", t("genWorkout"));
-  setText("btnRegenWorkout", t("regenWorkout"));
-  setText("t_workout_ai_disclaimer", `${t("noMedical")} • ${t("appStudy")}`);
-  setText("t_edit_title", t("editTitle"));
-  setText("btnSaveNotes", t("saveNotes"));
-
-  setText("t_profile_title", t("profileTitle"));
-  setText("t_profile_goal", t("profileGoal"));
-  setText("btnSaveProfile", t("saveProfile"));
-  setText("t_profile_disclaimer", t("profileDisc"));
-
-  setText("t_settings_title", t("settingsTitle"));
-  setText("t_lang_label", t("langLabel"));
-  setText("btnReplayTutorial", t("replayTut"));
-  setText("t_settings_disclaimer", `${t("settingsDisc")}\n${t("appStudy")}`);
-  setText("t_admin_hint_title", t("adminHintTitle"));
-  setText("t_admin_hint_body", t("adminHintBody"));
-  setText("t_admin_longpress", t("longPress"));
-
-  // logout buttons
-  document.getElementById("btnLogout").innerText = t("logout");
-  document.getElementById("btnLogoutTop").innerText = t("logout");
-  document.getElementById("btnAdminLogout").innerText = t("logout");
-  document.getElementById("btnAdminLogoutTop").innerText = t("logout");
-
-  // admin
-  const adminDisc = document.getElementById("t_admin_disclaimer");
-  if(adminDisc) adminDisc.innerText = `${t("adminDis")}\n${t("appStudy")}`;
-  setText("t_admin_rules", t("adminRules"));
-  if(adminSearch){
-    adminSearch.placeholder = (currentUser?.lang === "th") ? "ค้นหา user/email/lang/goal..." : "Search user/email/lang/goal...";
+  if(!emailJsReady()){
+    alert(dict.errEmailJS);
+    // fallback for demo: show OTP
+    alert((uiLang==="th"?"OTP (เดโม): ":"OTP (Demo): ") + otpTemp);
+    return;
   }
 
-  tutorialDisclaimer.innerText = `“${t("appStudy")}”`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email: otpEmail,
+      otp_code: String(otpTemp),
+      app_name: "FitSense AI"
+    });
+    alert(uiLang==="th" ? "ส่ง OTP ไปที่อีเมลแล้ว ✅" : "OTP sent ✅");
+  }catch(e){
+    alert(uiLang==="th" ? "ส่งอีเมลไม่สำเร็จ (ตรวจ EmailJS)" : "Email failed (check EmailJS)");
+  }
 }
 
-/* language switch */
-function changeLanguage(lang){
-  if(!currentUser){ setUiLang(lang); applyStaticI18n(lang); return; }
-  currentUser.lang = lang;
-  setUiLang(lang);
-  save();
-  applyAppI18n();
-  topLang.innerText = `Language: ${currentUser.lang.toUpperCase()}`;
+function resetPassword(){
+  const uiLang = getUiLang();
+  const dict = I18N[uiLang] || I18N.en;
 
-  if(!screenHome.classList.contains("hide")) renderHome();
-  if(!screenFood.classList.contains("hide")) renderFood();
-  if(!screenWorkout.classList.contains("hide")) renderWorkout();
-  if(!screenProfile.classList.contains("hide")) renderProfile();
-  if(currentUser.role === "admin") renderAdmin();
-}
+  const otp = document.getElementById("fOTP").value.trim();
+  const newPass = document.getElementById("fNewPass").value.trim();
 
-/* =========================================================
-   Tabs
-========================================================= */
-function goTab(tab, silent=false){
-  screenHome.classList.add("hide");
-  screenFood.classList.add("hide");
-  screenWorkout.classList.add("hide");
-  screenProfile.classList.add("hide");
-  screenSettings.classList.add("hide");
+  if(newPass.length < 6 || !hasSpecialChar(newPass)){
+    alert(dict.errPassRule); return;
+  }
+  if(!otpTemp || otp !== String(otpTemp)){
+    alert(dict.errOtp); return;
+  }
 
-  ["Home","Food","Workout","Profile","Settings"].forEach(x=>{
-    document.getElementById("tab"+x).classList.remove("active");
-  });
+  const u = users.find(x => (x.email||"") === otpEmail);
+  if(u) u.pass = newPass;
 
-  if(tab === "home"){ screenHome.classList.remove("hide"); document.getElementById("tabHome").classList.add("active"); renderHome(); }
-  if(tab === "food"){ screenFood.classList.remove("hide"); document.getElementById("tabFood").classList.add("active"); renderFood(); }
-  if(tab === "workout"){ screenWorkout.classList.remove("hide"); document.getElementById("tabWorkout").classList.add("active"); renderWorkout(); }
-  if(tab === "profile"){ screenProfile.classList.remove("hide"); document.getElementById("tabProfile").classList.add("active"); renderProfile(); }
-  if(tab === "settings"){ screenSettings.classList.remove("hide"); document.getElementById("tabSettings").classList.add("active"); }
+  otpTemp = null; otpEmail = null;
+  saveUsers();
 
-  if(!silent) clearHighlight();
+  alert(uiLang==="th" ? "เปลี่ยนรหัสผ่านแล้ว ✅" : "Password updated ✅");
+  showLogin();
 }
 
 /* =========================================================
@@ -1315,7 +1301,7 @@ function calcTargetCalories(user){
 
   const s = (user.gender === "male") ? 5 : (user.gender === "female") ? -161 : -78;
   const bmr = (10*w) + (6.25*h) - (5*a) + s;
-  let tdee = bmr * 1.35;
+  let tdee = bmr * 1.35; // light activity baseline
 
   if(user.goal === "lose") tdee -= 400;
   if(user.goal === "gain") tdee += 300;
@@ -1332,103 +1318,233 @@ function ensureTodayHistory(){
       manualGoal: null,
       meals: null,
       intakes: [],
-      intakeTotal: 0
+      intakeTotal: 0,
+      workouts: [],
+      burnedTotal: 0
     };
-    save();
-  } else {
+  }else{
     currentUser.history[d].target = calcTargetCalories(currentUser);
     if(!Array.isArray(currentUser.history[d].intakes)) currentUser.history[d].intakes = [];
+    if(!Array.isArray(currentUser.history[d].workouts)) currentUser.history[d].workouts = [];
     currentUser.history[d].intakeTotal = currentUser.history[d].intakes.reduce((s,x)=>s+Number(x.cal||0),0);
-    save();
+    currentUser.history[d].burnedTotal = currentUser.history[d].workouts.reduce((s,x)=>s+Number(x.burn||0),0);
   }
+  saveUsers();
 }
-
 function getTodayDay(){
   ensureTodayHistory();
   return currentUser.history[todayKey()];
 }
 
 /* =========================================================
-   Home
+   App boot + i18n
+========================================================= */
+function applyAppI18n(){
+  // Tabs
+  document.getElementById("tabHome").innerText = (currentUser.lang==="th")?"หน้าแรก":"Home";
+  document.getElementById("tabFood").innerText = (currentUser.lang==="th")?"อาหาร":"Food";
+  document.getElementById("tabWorkout").innerText = (currentUser.lang==="th")?"ออกกำลัง":"Workout";
+  document.getElementById("tabProfile").innerText = (currentUser.lang==="th")?"โปรไฟล์":"Profile";
+  document.getElementById("tabSettings").innerText = (currentUser.lang==="th")?"ตั้งค่า":"Settings";
+
+  // Headings & buttons
+  document.getElementById("t_home_title").innerText = t("homeTitle");
+  document.getElementById("t_home_disclaimer").innerText = `${t("homeDisc")}\n${t("study")}`;
+
+  document.getElementById("t_food_title").innerText = t("foodTitle");
+  document.getElementById("btnGenMeals").innerText = t("genMeals");
+  document.getElementById("t_ai_disclaimer").innerText = `${t("aiWarn")} • ${t("study")}`;
+  document.getElementById("t_intake_title").innerText = t("intakeTitle");
+  document.getElementById("btnAddIntake").innerText = t("add");
+  document.getElementById("t_today_log").innerText = t("todayLog");
+  document.getElementById("t_history_title").innerText = t("history");
+  document.getElementById("btnSaveManualGoal").innerText = t("saveGoal");
+  document.getElementById("t_calorie_note").innerText = `${t("aiWarn")}\n${t("study")}`;
+
+  document.getElementById("t_workout_title").innerText = t("workoutTitle");
+  document.getElementById("t_burn_title").innerText = t("burnTitle");
+  document.getElementById("t_burn_note").innerText = t("burnNote");
+  document.getElementById("btnAddWorkoutLog").innerText = t("addWorkout");
+  document.getElementById("t_plan_title").innerText = t("planTitle");
+  document.getElementById("btnGenWorkout").innerText = t("genPlan");
+  document.getElementById("btnRegenWorkout").innerText = t("regen");
+  document.getElementById("t_workout_ai_disclaimer").innerText = `${t("aiWarn")} • ${t("study")}`;
+  document.getElementById("t_edit_title").innerText = t("notes");
+  document.getElementById("btnSaveNotes").innerText = t("saveNotes");
+
+  document.getElementById("t_profile_title").innerText = t("profileTitle");
+  document.getElementById("t_profile_lock_email").innerText = t("profileLock");
+  document.getElementById("btnSaveProfile").innerText = t("saveProfile");
+  document.getElementById("t_profile_disclaimer").innerText = t("profDisc");
+
+  document.getElementById("t_settings_title").innerText = t("settingsTitle");
+  document.getElementById("t_storage_title").innerText = t("storageTitle");
+  document.getElementById("t_tutorial_title").innerText = t("tutTitle");
+  document.getElementById("btnReplayTutorial").innerText = t("replayTut");
+  document.getElementById("t_settings_disclaimer").innerText = `${t("settingsDisc")}\n${t("study")}`;
+
+  document.getElementById("btnLogout").innerText = t("logout");
+  document.getElementById("btnLogoutTop").innerText = t("logout");
+}
+
+function bootUserApp(){
+  hideAll();
+  appWrap.classList.remove("hide");
+  bottomNav.classList.remove("hide");
+
+  document.getElementById("welcome").innerText =
+    (currentUser.lang==="th") ? `สวัสดี ${currentUser.name}` : `Hello ${currentUser.name}`;
+  document.getElementById("topLang").innerText = `Language: ${String(currentUser.lang).toUpperCase()}`;
+
+  document.getElementById("langSwitch").value = currentUser.lang;
+
+  applyAppI18n();
+  ensureTodayHistory();
+  goTab("home", true);
+  renderStorageInfo();
+  startUserTutorial(false);
+  checkForcedLogout();
+}
+
+/* =========================================================
+   Tabs
+========================================================= */
+function goTab(tab, silent=false){
+  screenHome.classList.add("hide");
+  screenFood.classList.add("hide");
+  screenWorkout.classList.add("hide");
+  screenProfile.classList.add("hide");
+  screenSettings.classList.add("hide");
+
+  ["Home","Food","Workout","Profile","Settings"].forEach(x=>{
+    document.getElementById("tab"+x).classList.remove("active");
+  });
+
+  if(tab==="home"){ screenHome.classList.remove("hide"); document.getElementById("tabHome").classList.add("active"); renderHome(); }
+  if(tab==="food"){ screenFood.classList.remove("hide"); document.getElementById("tabFood").classList.add("active"); renderFood(); }
+  if(tab==="workout"){ screenWorkout.classList.remove("hide"); document.getElementById("tabWorkout").classList.add("active"); renderWorkout(); }
+  if(tab==="profile"){ screenProfile.classList.remove("hide"); document.getElementById("tabProfile").classList.add("active"); renderProfile(); }
+  if(tab==="settings"){ screenSettings.classList.remove("hide"); document.getElementById("tabSettings").classList.add("active"); renderStorageInfo(); }
+
+  if(!silent) clearHighlight();
+  checkForcedLogout();
+}
+
+/* =========================================================
+   Home (Improved)
 ========================================================= */
 function renderHome(){
   const day = getTodayDay();
-
-  const badges = [];
-  badges.push(`<span class="pill">🧩 ${currentUser.role.toUpperCase()}</span>`);
-  badges.push(`<span class="pill">🌐 ${currentUser.lang.toUpperCase()}</span>`);
-  badges.push(`<span class="pill">🎯 ${(currentUser.goal || "maintain").toUpperCase()}</span>`);
-  document.getElementById("homeBadges").innerHTML = badges.join("");
-
-  const target = (day.manualGoal != null) ? day.manualGoal : day.target;
+  const target = (day.manualGoal!=null) ? day.manualGoal : day.target;
   const intake = day.intakeTotal || 0;
-  const remain = target - intake;
+  const burned = day.burnedTotal || 0;
+  const net = Math.max(0, intake - burned); // simple net
+  const remain = target - net;
 
-  const remainText = (remain >= 0)
-    ? `${remain}`
-    : (currentUser.lang === "th" ? `เกิน ${Math.abs(remain)}` : `Over ${Math.abs(remain)}`);
+  const remainText = (remain>=0) ? remain : -remain;
+  const remainLabel = (remain>=0) ? t("kpiRemain") : (currentUser.lang==="th" ? "เกิน" : "Over");
 
-  document.getElementById("homeOverview").innerHTML = `
+  const kpis = [
+    {cls:"p", label:t("kpiTarget"), val:target, hint:(currentUser.lang==="th"?"kcal/วัน":"kcal/day")},
+    {cls:"a", label:t("kpiIntake"), val:intake, hint:(currentUser.lang==="th"?"จากการบันทึกอาหาร":"from intake logs")},
+    {cls:"s", label:t("kpiBurned"), val:burned, hint:(currentUser.lang==="th"?"จากการออกกำลัง":"from workout logs")},
+    {cls: (remain>=0) ? "p" : "d", label:remainLabel, val:remainText, hint:(currentUser.lang==="th"?"คงเหลือสุทธิ":"net remaining")}
+  ];
+
+  document.getElementById("homeKpis").innerHTML = kpis.map(k=>`
+    <div class="kpi ${k.cls}">
+      <div class="label">${k.label}</div>
+      <div class="val">${k.val}</div>
+      <div class="hint">${k.hint}</div>
+    </div>
+  `).join("");
+
+  // AI Insight (simple rules)
+  let insight = "";
+  if(net > target){
+    insight = (currentUser.lang==="th")
+      ? `วันนี้คุณเกินเป้าแล้ว ✅\nแนะนำ: ลดของหวาน/ของทอด หรือเดินเพิ่ม 15–25 นาที`
+      : `You are over target today ✅\nTip: reduce sweets/fried food or add 15–25 min walk.`;
+  }else if(remain > 500){
+    insight = (currentUser.lang==="th")
+      ? `วันนี้ยังเหลือแคลอรีค่อนข้างมาก\nแนะนำ: เลือกมื้อโปรตีน/ผัก หรือของว่างสุขภาพ`
+      : `You still have many calories remaining.\nTip: choose protein/veg meal or healthy snack.`;
+  }else{
+    insight = (currentUser.lang==="th")
+      ? `ดีมาก! คุณคุมแคลอรีได้ใกล้เคียงเป้าหมาย\nแนะนำ: ดื่มน้ำและพักผ่อนให้เพียงพอ`
+      : `Great! You're close to your target.\nTip: stay hydrated and sleep well.`;
+  }
+
+  document.getElementById("aiInsightBox").innerHTML = `
+    <h3 style="margin:0 0 8px">${t("aiInsightTitle")}</h3>
+    <div style="white-space:pre-line;color:var(--muted);font-weight:600">${escapeHtml(insight)}</div>
+  `;
+
+  // Tables
+  document.getElementById("t_today_tables").innerText = t("todaySummary");
+  document.getElementById("homeTables").innerHTML = `
     <table>
-      <tr><th>${t("calTarget")}</th><th>${t("calIntake")}</th><th>${t("calRemaining")}</th></tr>
-      <tr><td>${target}</td><td>${intake}</td><td>${remainText}</td></tr>
+      <tr>
+        <th>${t("kpiTarget")}</th>
+        <th>${t("kpiIntake")}</th>
+        <th>${t("kpiBurned")}</th>
+        <th>${t("kpiNet")}</th>
+      </tr>
+      <tr>
+        <td>${target}</td>
+        <td>${intake}</td>
+        <td>${burned}</td>
+        <td>${net}</td>
+      </tr>
     </table>
-    <div class="disclaimer">${t("noMedical")} • ${t("appStudy")}</div>
   `;
 }
 
 /* =========================================================
-   Food & Calories
+   Food (AI mock + intake)
 ========================================================= */
 function renderFood(){
   const day = getTodayDay();
-
-  const target = (day.manualGoal != null) ? day.manualGoal : day.target;
+  const target = (day.manualGoal!=null) ? day.manualGoal : day.target;
   const intake = day.intakeTotal || 0;
-  const remain = target - intake;
-  const remainText = (remain >= 0)
-    ? `${remain}`
-    : (currentUser.lang === "th" ? `เกิน ${Math.abs(remain)}` : `Over ${Math.abs(remain)}`);
+  const burned = day.burnedTotal || 0;
+  const net = Math.max(0, intake - burned);
+  const remain = target - net;
+  const remainText = (remain>=0) ? remain : (currentUser.lang==="th" ? `เกิน ${-remain}` : `Over ${-remain}`);
 
-  calorieSummary.innerHTML = `
+  document.getElementById("calorieSummary").innerHTML = `
     <table>
-      <tr><th>${t("calTarget")}</th><th>${t("calIntake")}</th><th>${t("calRemaining")}</th></tr>
-      <tr><td>${target}</td><td>${intake}</td><td>${remainText}</td></tr>
+      <tr><th>${t("kpiTarget")}</th><th>${t("kpiIntake")}</th><th>${t("kpiBurned")}</th><th>${t("kpiRemain")}</th></tr>
+      <tr><td>${target}</td><td>${intake}</td><td>${burned}</td><td>${remainText}</td></tr>
     </table>
   `;
 
-  // meals
   if(day.meals){
-    aiMealTable.innerHTML = renderMealTable(day.meals);
-  } else {
-    aiMealTable.innerHTML = `<div class="muted">${t("mealPlanTitle")} — ${currentUser.lang==="th"?"ยังไม่สร้าง":"not generated yet"}</div>`;
+    document.getElementById("aiMealTable").innerHTML = renderMealTable(day.meals);
+  }else{
+    document.getElementById("aiMealTable").innerHTML = `<div style="color:var(--muted)">${currentUser.lang==="th"?"ยังไม่สร้างเมนู":"Not generated yet"}</div>`;
   }
 
-  // manual goal input
   document.getElementById("manualGoal").value = (day.manualGoal ?? "");
-
   renderTodayIntakeLog();
   renderHistory();
 }
 
 function renderMealTable(meals){
-  let total = meals.reduce((s,m)=>s+m.cal,0);
-  const rows = meals.map(m => `
-    <tr>
-      <td>${m.time}</td>
-      <td>${m.name}</td>
-      <td>${m.cal}</td>
-    </tr>
+  const total = meals.reduce((s,m)=>s+m.cal,0);
+  const rows = meals.map(m=>`
+    <tr><td>${escapeHtml(m.time)}</td><td style="text-align:left">${escapeHtml(m.name)}</td><td>${m.cal}</td></tr>
   `).join("");
-
   return `
-    <h3 style="margin-top:12px">${t("mealPlanTitle")}</h3>
-    <table>
-      <tr><th>${t("time")}</th><th>${t("meal")}</th><th>${t("calories")}</th></tr>
-      ${rows}
-      <tr><th colspan="2">${t("total")}</th><th>${total}</th></tr>
-    </table>
-    <div class="disclaimer">${t("noMedical")}</div>
+    <div class="section">
+      <h3 style="margin:0 0 8px">${currentUser.lang==="th"?"ตารางอาหารจาก AI (จำลอง)":"AI Meal Plan (Mock)"}</h3>
+      <table>
+        <tr><th>${currentUser.lang==="th"?"มื้อ":"Time"}</th><th>${currentUser.lang==="th"?"อาหาร":"Meal"}</th><th>kcal</th></tr>
+        ${rows}
+        <tr><th colspan="2">${currentUser.lang==="th"?"รวม":"Total"}</th><th>${total}</th></tr>
+      </table>
+      <div class="disclaimer">${t("aiWarn")}</div>
+    </div>
   `;
 }
 
@@ -1438,83 +1554,74 @@ function generateMeals(){
   const lang = currentUser.lang;
 
   const foodsEN = {
-    protein: ["Chicken breast", "Salmon", "Eggs", "Tofu", "Greek yogurt"],
-    carbs: ["Rice", "Oats", "Sweet potato", "Whole-wheat bread", "Quinoa"],
-    veg: ["Salad", "Broccoli", "Mixed vegetables", "Spinach", "Tomato soup"],
-    snack: ["Banana", "Nuts", "Apple", "Protein bar", "Milk"]
+    protein: ["Chicken breast","Salmon","Eggs","Tofu","Greek yogurt"],
+    carbs: ["Rice","Oats","Sweet potato","Whole-wheat bread","Quinoa"],
+    veg: ["Salad","Broccoli","Mixed vegetables","Spinach","Tomato soup"],
+    snack: ["Banana","Nuts","Apple","Protein bar","Milk"]
   };
   const foodsTH = {
-    protein: ["อกไก่", "ปลาแซลมอน", "ไข่", "เต้าหู้", "โยเกิร์ตกรีก"],
-    carbs: ["ข้าว", "ข้าวโอ๊ต", "มันหวาน", "ขนมปังโฮลวีต", "ควินัว"],
-    veg: ["สลัด", "บรอกโคลี", "ผักรวม", "ผักโขม", "ซุปมะเขือเทศ"],
-    snack: ["กล้วย", "ถั่ว", "แอปเปิล", "โปรตีนบาร์", "นม"]
+    protein: ["อกไก่","ปลาแซลมอน","ไข่","เต้าหู้","โยเกิร์ตกรีก"],
+    carbs: ["ข้าว","ข้าวโอ๊ต","มันหวาน","ขนมปังโฮลวีต","ควินัว"],
+    veg: ["สลัด","บรอกโคลี","ผักรวม","ผักโขม","ซุปมะเขือเทศ"],
+    snack: ["กล้วย","ถั่ว","แอปเปิล","โปรตีนบาร์","นม"]
   };
-  const F = (lang === "th") ? foodsTH : foodsEN;
+  const F = (lang==="th") ? foodsTH : foodsEN;
 
-  const base = (goal === "lose") ? 1600 : (goal === "gain") ? 2400 : 2000;
-  const mealSplit = {
-    [t("breakfast")]: 0.28,
-    [t("lunch")]: 0.34,
-    [t("dinner")]: 0.28,
-    [t("snack")]: 0.10
-  };
+  const base = (goal==="lose") ? 1600 : (goal==="gain") ? 2400 : 2000;
+  const split = { b:0.28, l:0.34, d:0.28, s:0.10 };
 
-  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-  function calFor(frac){
-    const v = Math.round(base*frac + (Math.random()*90 - 45));
-    return Math.max(80, v);
-  }
+  const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+  const calFor = frac => Math.max(80, Math.round(base*frac + (Math.random()*90-45)));
 
   const meals = [
-    { time: t("breakfast"), name: `${pick(F.protein)} + ${pick(F.carbs)}`, cal: calFor(mealSplit[t("breakfast")]) },
-    { time: t("lunch"), name: `${pick(F.protein)} + ${pick(F.veg)} + ${pick(F.carbs)}`, cal: calFor(mealSplit[t("lunch")]) },
-    { time: t("dinner"), name: `${pick(F.protein)} + ${pick(F.veg)}`, cal: calFor(mealSplit[t("dinner")]) },
-    { time: t("snack"), name: `${pick(F.snack)}`, cal: calFor(mealSplit[t("snack")]) }
+    { time:(lang==="th"?"เช้า":"Breakfast"), name:`${pick(F.protein)} + ${pick(F.carbs)}`, cal:calFor(split.b) },
+    { time:(lang==="th"?"เที่ยง":"Lunch"), name:`${pick(F.protein)} + ${pick(F.veg)} + ${pick(F.carbs)}`, cal:calFor(split.l) },
+    { time:(lang==="th"?"เย็น":"Dinner"), name:`${pick(F.protein)} + ${pick(F.veg)}`, cal:calFor(split.d) },
+    { time:(lang==="th"?"ว่าง":"Snack"), name:`${pick(F.snack)}`, cal:calFor(split.s) },
   ];
 
   day.meals = meals;
-  save();
+  saveUsers();
   renderFood();
+  renderHome();
 }
 
 function addIntake(){
-  const lang = currentUser.lang;
   const name = document.getElementById("intakeName").value.trim();
   const cal = Number(document.getElementById("intakeCal").value || 0);
-  if(!name || !cal){ alert(I18N[lang].errIntake); return; }
+  if(!name || !cal){ alert(currentUser.lang==="th"?"กรอกชื่ออาหารและแคลอรี":"Enter food name and calories"); return; }
 
   const day = getTodayDay();
   day.intakes.unshift({ name, cal, ts: Date.now() });
   day.intakeTotal = day.intakes.reduce((s,x)=>s+Number(x.cal||0),0);
+  saveUsers();
 
-  document.getElementById("intakeName").value = "";
-  document.getElementById("intakeCal").value = "";
-
-  save();
-  renderFood();
+  document.getElementById("intakeName").value="";
+  document.getElementById("intakeCal").value="";
+  renderFood(); renderHome();
 }
 
 function quickAdd(kcal){
-  const name = document.getElementById("intakeName").value.trim() || (currentUser.lang==="th" ? "เพิ่มด่วน" : "Quick Add");
+  const n = document.getElementById("intakeName").value.trim() || (currentUser.lang==="th"?"เพิ่มด่วน":"Quick add");
+  document.getElementById("intakeName").value = n;
   document.getElementById("intakeCal").value = kcal;
-  document.getElementById("intakeName").value = name;
   addIntake();
 }
 
 function deleteIntake(index){
   const day = getTodayDay();
-  day.intakes.splice(index, 1);
+  day.intakes.splice(index,1);
   day.intakeTotal = day.intakes.reduce((s,x)=>s+Number(x.cal||0),0);
-  save();
-  renderFood();
+  saveUsers();
+  renderFood(); renderHome();
 }
 
 function renderTodayIntakeLog(){
   const day = getTodayDay();
   const list = day.intakes || [];
-
   if(!list.length){
-    intakeLogTable.innerHTML = `<p style="text-align:center">${currentUser.lang==="th"?"ยังไม่มีรายการวันนี้":"No intake yet today"}</p>`;
+    document.getElementById("intakeLogTable").innerHTML =
+      `<p style="text-align:center;color:var(--muted)">${currentUser.lang==="th"?"ยังไม่มีรายการวันนี้":"No intake yet today"}</p>`;
     return;
   }
 
@@ -1526,70 +1633,157 @@ function renderTodayIntakeLog(){
       <th>${currentUser.lang==="th"?"ลบ":"Del"}</th>
     </tr>`;
 
-  list.forEach((it, idx) => {
+  list.forEach((it, idx)=>{
     const time = new Date(it.ts).toLocaleTimeString(currentUser.lang==="th"?"th-TH":"en-US",{hour:"2-digit",minute:"2-digit"});
     html += `<tr>
       <td>${time}</td>
       <td style="text-align:left">${escapeHtml(it.name)}</td>
       <td>${Number(it.cal||0)}</td>
-      <td><button class="red" style="margin:0;padding:8px 10px;border-radius:14px;box-shadow:none" onclick="deleteIntake(${idx})">
+      <td><button class="bD" style="margin:0;padding:8px;border-radius:12px;box-shadow:none" onclick="deleteIntake(${idx})">
+        ${currentUser.lang==="th"?"ลบ":"Delete"}
+      </button></td>
+    </tr>`;
+  });
+  html += `</table>`;
+  document.getElementById("intakeLogTable").innerHTML = html;
+}
+
+function saveManualGoal(){
+  const v = document.getElementById("manualGoal").value.trim();
+  const day = getTodayDay();
+
+  if(v===""){
+    day.manualGoal = null;
+    saveUsers();
+    renderFood(); renderHome();
+    return;
+  }
+  const n = Number(v);
+  if(!Number.isFinite(n) || n<=0){
+    alert(currentUser.lang==="th"?"กรอกเป้าแคลอรีให้ถูกต้อง":"Enter a valid goal"); return;
+  }
+  day.manualGoal = Math.round(n);
+  saveUsers();
+  renderFood(); renderHome();
+}
+
+function renderHistory(){
+  const keys = Object.keys(currentUser.history || {}).sort().slice(-10).reverse();
+  let html = `<table><tr>
+    <th>${currentUser.lang==="th"?"วันที่":"Date"}</th>
+    <th>${t("kpiTarget")}</th>
+    <th>${t("kpiIntake")}</th>
+    <th>${t("kpiBurned")}</th>
+  </tr>`;
+
+  for(const k of keys){
+    const d = currentUser.history[k];
+    const target = (d.manualGoal!=null) ? d.manualGoal : (d.target||"-");
+    html += `<tr><td>${k}</td><td>${target}</td><td>${d.intakeTotal||0}</td><td>${d.burnedTotal||0}</td></tr>`;
+  }
+  html += `</table>`;
+  document.getElementById("historyTable").innerHTML = html;
+}
+
+/* =========================================================
+   Workout Burn (MET)
+========================================================= */
+const MET = {
+  walk:   { light:2.8, moderate:3.5, hard:4.3 },
+  run:    { light:7.0, moderate:9.8, hard:11.5 },
+  cycle:  { light:4.0, moderate:6.8, hard:8.5 },
+  weights:{ light:3.5, moderate:5.0, hard:6.0 },
+  hiit:   { light:7.5, moderate:9.0, hard:10.5 }
+};
+
+function calcBurnedCalories(weightKg, minutes, met){
+  const hours = Math.max(0, Number(minutes||0)) / 60;
+  return Math.max(0, Math.round(met * weightKg * hours));
+}
+
+function addWorkoutLog(){
+  const day = getTodayDay();
+  const type = document.getElementById("wType").value;
+  const intensity = document.getElementById("wIntensity").value;
+  const minutes = Number(document.getElementById("wMinutes").value || 0);
+
+  if(!minutes || minutes<=0){
+    alert(currentUser.lang==="th"?"กรอกจำนวนนาทีให้ถูกต้อง":"Enter valid minutes"); return;
+  }
+
+  const met = MET[type]?.[intensity] ?? 5.0;
+  const burn = calcBurnedCalories(currentUser.weight||60, minutes, met);
+
+  day.workouts.unshift({
+    type, intensity, minutes, met, burn,
+    ts: Date.now()
+  });
+  day.burnedTotal = day.workouts.reduce((s,x)=>s+Number(x.burn||0),0);
+
+  saveUsers();
+  document.getElementById("wMinutes").value = "";
+  renderWorkout(); renderHome(); renderFood();
+}
+
+function deleteWorkout(index){
+  const day = getTodayDay();
+  day.workouts.splice(index,1);
+  day.burnedTotal = day.workouts.reduce((s,x)=>s+Number(x.burn||0),0);
+  saveUsers();
+  renderWorkout(); renderHome(); renderFood();
+}
+
+function renderWorkoutLog(){
+  const day = getTodayDay();
+  const list = day.workouts || [];
+  if(!list.length){
+    document.getElementById("workoutLogTable").innerHTML =
+      `<p style="text-align:center;color:var(--muted)">${currentUser.lang==="th"?"ยังไม่มีการออกกำลังวันนี้":"No workout logged today"}</p>`;
+    return;
+  }
+
+  let html = `<table>
+    <tr>
+      <th>${currentUser.lang==="th"?"เวลา":"Time"}</th>
+      <th>${currentUser.lang==="th"?"ประเภท":"Type"}</th>
+      <th>${currentUser.lang==="th"?"นาที":"Min"}</th>
+      <th>MET</th>
+      <th>${currentUser.lang==="th"?"เผา":"Burn"}</th>
+      <th>${currentUser.lang==="th"?"ลบ":"Del"}</th>
+    </tr>`;
+
+  list.forEach((w, idx)=>{
+    const time = new Date(w.ts).toLocaleTimeString(currentUser.lang==="th"?"th-TH":"en-US",{hour:"2-digit",minute:"2-digit"});
+    const typeName = ({walk:"Walk",run:"Run",cycle:"Cycle",weights:"Weights",hiit:"HIIT"})[w.type] || w.type;
+    html += `<tr>
+      <td>${time}</td>
+      <td style="text-align:left">${escapeHtml(typeName)} (${escapeHtml(w.intensity)})</td>
+      <td>${w.minutes}</td>
+      <td>${w.met}</td>
+      <td>${w.burn}</td>
+      <td><button class="bD" style="margin:0;padding:8px;border-radius:12px;box-shadow:none" onclick="deleteWorkout(${idx})">
         ${currentUser.lang==="th"?"ลบ":"Delete"}
       </button></td>
     </tr>`;
   });
 
   html += `</table>`;
-  intakeLogTable.innerHTML = html;
-}
-
-function saveManualGoal(){
-  const lang = currentUser.lang;
-  const v = document.getElementById("manualGoal").value.trim();
-  const day = getTodayDay();
-
-  if(v === ""){
-    day.manualGoal = null;
-    save();
-    renderFood();
-    return;
-  }
-
-  const n = Number(v);
-  if(!Number.isFinite(n) || n <= 0){ alert(I18N[lang].errGoal); return; }
-  day.manualGoal = Math.round(n);
-  save();
-  renderFood();
-}
-
-function escapeHtml(s){
-  return String(s ?? "").replace(/[&<>"']/g, (c) => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[c]));
-}
-
-function renderHistory(){
-  const keys = Object.keys(currentUser.history || {}).sort().slice(-10).reverse();
-  let html = `<table><tr><th>${currentUser.lang==="th"?"วันที่":"Date"}</th><th>${t("calTarget")}</th><th>${t("calIntake")}</th></tr>`;
-
-  for(const k of keys){
-    const day = currentUser.history[k];
-    const target = (day.manualGoal != null) ? day.manualGoal : (day.target || "-");
-    html += `<tr><td>${k}</td><td>${target}</td><td>${day.intakeTotal || 0}</td></tr>`;
-  }
-  html += `</table>`;
-  historyTable.innerHTML = html;
+  document.getElementById("workoutLogTable").innerHTML = html;
 }
 
 /* =========================================================
-   Workout generator (mock AI)
+   Workout plan generator (mock)
 ========================================================= */
 function renderWorkout(){
+  renderWorkoutLog();
+
   if(currentUser.workoutPlan){
-    workoutPlan.innerHTML = renderWorkoutPlan(currentUser.workoutPlan);
-  } else {
-    workoutPlan.innerHTML = `<div class="muted">${t("weeklyPlan")} — ${currentUser.lang==="th"?"ยังไม่สร้าง":"not generated yet"}</div>`;
+    document.getElementById("workoutPlan").innerHTML = renderWorkoutPlan(currentUser.workoutPlan);
+  }else{
+    document.getElementById("workoutPlan").innerHTML =
+      `<div style="color:var(--muted)">${currentUser.lang==="th"?"ยังไม่สร้างแผน":"Not generated yet"}</div>`;
   }
-  workoutNotes.value = currentUser.workoutNotes || "";
+  document.getElementById("workoutNotes").value = currentUser.workoutNotes || "";
 }
 
 function generateWorkout(){
@@ -1601,13 +1795,13 @@ function generateWorkout(){
 
   const ex = {
     gym: {
-      upper: lang==="th" ? ["ดันอกแมชชีน","Lat Pulldown","ดัมเบลชอลเดอร์เพรส","เคเบิลโรว์","ไทรเซ็ปส์กดลง"] : ["Chest press machine","Lat pulldown","DB shoulder press","Cable row","Triceps pushdown"],
+      upper: lang==="th" ? ["ดันอกแมชชีน","Lat Pulldown","ดัมเบลชอลเดอร์เพรส","เคเบิลโรว์","ไทรเซ็ปส์กดลง"] : ["Chest press","Lat pulldown","DB shoulder press","Cable row","Triceps pushdown"],
       lower: lang==="th" ? ["สควอท","เลกเพรส","RDL","เลกเอ็กซ์เทนชัน","แฮมสตริงคูล"] : ["Squat","Leg press","RDL","Leg extension","Hamstring curl"],
       cardio: lang==="th" ? ["เดินชัน 20 นาที","ปั่นจักรยาน 15 นาที"] : ["Incline walk 20 min","Bike 15 min"]
     },
     home: {
       upper: lang==="th" ? ["วิดพื้น","ดัมเบลโรว์","ดัมเบลชอลเดอร์เพรส","ไบเซ็ปส์เคิร์ล","ทริเซ็ปส์ดิป"] : ["Push-ups","DB rows","DB shoulder press","Biceps curl","Triceps dips"],
-      lower: lang==="th" ? ["สควอทน้ำหนักตัว","ลันจ์","สะพานก้น (Glute bridge)","เดดลิฟต์ดัมเบล","คาล์ฟเรส"] : ["Bodyweight squats","Lunges","Glute bridge","DB deadlift","Calf raises"],
+      lower: lang==="th" ? ["สควอทน้ำหนักตัว","ลันจ์","กลูตบริดจ์","เดดลิฟต์ดัมเบล","คาล์ฟเรส"] : ["Bodyweight squats","Lunges","Glute bridge","DB deadlift","Calf raises"],
       cardio: lang==="th" ? ["กระโดดตบ 10 นาที","วิ่งอยู่กับที่ 12 นาที"] : ["Jumping jacks 10 min","High knees 12 min"]
     },
     none: {
@@ -1617,171 +1811,437 @@ function generateWorkout(){
     }
   };
 
-  const difficulty = {
-    beginner: { sets: 3, reps: "10-12", rest: 60 },
-    intermediate: { sets: 4, reps: "8-12", rest: 75 },
-    advanced: { sets: 5, reps: "6-10", rest: 90 }
+  const diff = {
+    beginner: { sets:3, reps:"10-12", rest:60 },
+    intermediate: { sets:4, reps:"8-12", rest:75 },
+    advanced: { sets:5, reps:"6-10", rest:90 }
   }[level];
 
-  function pick(arr){
-    const copy = [...arr];
-    copy.sort(()=>Math.random()-0.5);
-    return copy.slice(0, Math.min(4, copy.length));
-  }
+  const pick = (arr)=>{
+    const copy=[...arr]; copy.sort(()=>Math.random()-0.5);
+    return copy.slice(0, Math.min(4,copy.length));
+  };
 
-  const plan = [];
+  const plan=[];
   for(let i=1;i<=days;i++){
-    const isUpper = (i % 2 === 1);
+    const isUpper = (i%2===1);
     const group = isUpper ? "upper" : "lower";
-
-    const main = pick(ex[equip][group]).map(name => ({
-      name, sets: difficulty.sets, reps: difficulty.reps, rest: difficulty.rest
-    }));
-
-    const cardio = (goal === "fatloss" || goal === "general")
-      ? pick(ex[equip].cardio).map(name => ({ name, sets: 1, reps: lang==="th" ? "ตามเวลา" : "time-based", rest: 0 }))
+    const main = pick(ex[equip][group]).map(name=>({ name, sets:diff.sets, reps:diff.reps, rest:diff.rest }));
+    const cardio = (goal==="fatloss" || goal==="general")
+      ? pick(ex[equip].cardio).map(name=>({ name, sets:1, reps:lang==="th"?"ตามเวลา":"time-based", rest:0 }))
       : [];
-
     plan.push({
-      day: (lang==="th" ? `วันที่ ${i}` : `Day ${i}`),
-      focus: isUpper ? (lang==="th" ? "ส่วนบน" : "Upper") : (lang==="th" ? "ส่วนล่าง" : "Lower"),
-      items: [...main, ...cardio]
+      day: (lang==="th"?`วันที่ ${i}`:`Day ${i}`),
+      focus: isUpper ? (lang==="th"?"ส่วนบน":"Upper") : (lang==="th"?"ส่วนล่าง":"Lower"),
+      items:[...main, ...cardio]
     });
   }
 
   currentUser.workoutPlan = { level, goal, days, equip, createdAt: Date.now(), plan };
-  save();
+  saveUsers();
   renderWorkout();
 }
 
 function renderWorkoutPlan(wp){
-  let html = `<h3 style="margin-top:12px">${t("weeklyPlan")}</h3>`;
-  html += `<div class="muted" style="margin-bottom:10px">
-    ${currentUser.lang==="th" ? "ระดับ" : "Level"}: <b>${wp.level}</b> •
-    ${currentUser.lang==="th" ? "เป้าหมาย" : "Goal"}: <b>${wp.goal}</b> •
-    ${currentUser.lang==="th" ? "อุปกรณ์" : "Equipment"}: <b>${wp.equip}</b> •
-    ${currentUser.lang==="th" ? "วัน/สัปดาห์" : "Days/week"}: <b>${wp.days}</b>
-  </div>`;
+  let html = `<div class="section">
+    <h3 style="margin:0 0 6px">${currentUser.lang==="th"?"แผนรายสัปดาห์":"Weekly Plan"}</h3>
+    <div style="color:var(--muted);font-size:12px;font-weight:700;margin-bottom:10px">
+      ${(currentUser.lang==="th"?"ระดับ":"Level")}: <b>${wp.level}</b> •
+      ${(currentUser.lang==="th"?"เป้าหมาย":"Goal")}: <b>${wp.goal}</b> •
+      ${(currentUser.lang==="th"?"อุปกรณ์":"Equipment")}: <b>${wp.equip}</b> •
+      ${(currentUser.lang==="th"?"วัน/สัปดาห์":"Days/week")}: <b>${wp.days}</b>
+    </div>
+  `;
 
-  wp.plan.forEach(d => {
-    html += `<div class="card" style="margin:10px 0;padding:12px;border-radius:18px;box-shadow:0 10px 22px rgba(0,0,0,.28)">
-      <div style="font-weight:900;margin-bottom:6px">${d.day} — ${d.focus}</div>
+  wp.plan.forEach(d=>{
+    html += `<div class="section" style="margin-top:10px">
+      <div style="font-weight:900;margin-bottom:6px">${escapeHtml(d.day)} — ${escapeHtml(d.focus)}</div>
       <table>
-        <tr><th>${t("exercise")}</th><th>${t("sets")}</th><th>${t("reps")}</th><th>${t("rest")}</th></tr>
-        ${d.items.map(it => `
+        <tr>
+          <th>${currentUser.lang==="th"?"ท่า":"Exercise"}</th>
+          <th>${currentUser.lang==="th"?"เซ็ต":"Sets"}</th>
+          <th>${currentUser.lang==="th"?"ครั้ง":"Reps"}</th>
+          <th>${currentUser.lang==="th"?"พัก":"Rest"}</th>
+        </tr>
+        ${d.items.map(it=>`
           <tr>
             <td style="text-align:left">${escapeHtml(it.name)}</td>
             <td>${it.sets}</td>
             <td>${it.reps}</td>
-            <td>${it.rest ? (it.rest + " " + t("seconds")) : "-"}</td>
+            <td>${it.rest? (it.rest + " " + (currentUser.lang==="th"?"วินาที":"sec")) : "-"}</td>
           </tr>
         `).join("")}
       </table>
     </div>`;
   });
 
+  html += `</div>`;
   return html;
 }
 
 function saveWorkoutNotes(){
-  currentUser.workoutNotes = workoutNotes.value;
-  save();
-  alert(currentUser.lang==="th" ? "บันทึกแล้ว ✅" : "Saved ✅");
+  currentUser.workoutNotes = document.getElementById("workoutNotes").value;
+  saveUsers();
+  alert(currentUser.lang==="th"?"บันทึกแล้ว ✅":"Saved ✅");
 }
 
 /* =========================================================
-   Profile
+   Profile (User can edit, email locked)
 ========================================================= */
 function renderProfile(){
   const u = currentUser;
+
+  document.getElementById("pName").value = u.name || "";
+  document.getElementById("pLname").value = u.lname || "";
+  document.getElementById("pAge").value = u.age || 0;
+  document.getElementById("pGender").value = u.gender || "other";
+  document.getElementById("pWeight").value = u.weight || 0;
+  document.getElementById("pHeight").value = u.height || 0;
   document.getElementById("profileGoal").value = u.goal || "maintain";
+  document.getElementById("langSwitch").value = u.lang || "en";
+
   document.getElementById("profileInfo").innerHTML = `
-    <table>
-      <tr><th>User ID</th><td>${u.id}</td></tr>
-      <tr><th>Username</th><td>${escapeHtml(u.user)}</td></tr>
-      <tr><th>Email</th><td>${escapeHtml(u.email)}</td></tr>
-      <tr><th>${u.lang==="th"?"ชื่อ":"Name"}</th><td>${escapeHtml(u.name)} ${escapeHtml(u.lname||"")}</td></tr>
-      <tr><th>${u.lang==="th"?"อายุ":"Age"}</th><td>${u.age||0}</td></tr>
-      <tr><th>${u.lang==="th"?"เพศ":"Gender"}</th><td>${escapeHtml(u.gender||"-")}</td></tr>
-      <tr><th>${u.lang==="th"?"น้ำหนัก":"Weight"}</th><td>${u.weight||0}</td></tr>
-      <tr><th>${u.lang==="th"?"ส่วนสูง":"Height"}</th><td>${u.height||0}</td></tr>
-      <tr><th>${u.lang==="th"?"ภาษา":"Language"}</th><td>${String(u.lang||"en").toUpperCase()}</td></tr>
-    </table>
+    <div class="section">
+      <table>
+        <tr><th>User ID</th><td>${escapeHtml(u.id)}</td></tr>
+        <tr><th>Username</th><td>${escapeHtml(u.user)}</td></tr>
+        <tr><th>Email</th><td>${escapeHtml(u.email)}</td></tr>
+        <tr><th>${u.lang==="th"?"ชื่อ":"Name"}</th><td>${escapeHtml(u.name)} ${escapeHtml(u.lname)}</td></tr>
+        <tr><th>${u.lang==="th"?"อายุ":"Age"}</th><td>${u.age||0}</td></tr>
+        <tr><th>${u.lang==="th"?"เพศ":"Gender"}</th><td>${escapeHtml(u.gender||"-")}</td></tr>
+        <tr><th>${u.lang==="th"?"น้ำหนัก":"Weight"}</th><td>${u.weight||0}</td></tr>
+        <tr><th>${u.lang==="th"?"ส่วนสูง":"Height"}</th><td>${u.height||0}</td></tr>
+      </table>
+    </div>
   `;
 }
 
 function saveProfile(){
-  const newGoal = document.getElementById("profileGoal").value;
-  currentUser.goal = newGoal;
+  // email locked: user cannot change it (we don't even provide input)
+  currentUser.name = document.getElementById("pName").value.trim() || currentUser.name;
+  currentUser.lname = document.getElementById("pLname").value.trim() || currentUser.lname;
+  currentUser.age = Number(document.getElementById("pAge").value || currentUser.age);
+  currentUser.gender = document.getElementById("pGender").value;
+  currentUser.weight = Number(document.getElementById("pWeight").value || currentUser.weight);
+  currentUser.height = Number(document.getElementById("pHeight").value || currentUser.height);
+  currentUser.goal = document.getElementById("profileGoal").value;
 
-  // update target for today
+  // update language via profile dropdown
+  const newLang = document.getElementById("langSwitch").value;
+  changeLanguage(newLang);
+
+  // refresh target today
   ensureTodayHistory();
-  save();
+  saveUsers();
 
-  alert(currentUser.lang==="th" ? "อัปเดตโปรไฟล์แล้ว ✅" : "Profile updated ✅");
+  alert(currentUser.lang==="th"?"อัปเดตแล้ว ✅":"Updated ✅");
   renderProfile();
-  renderHome();
-  renderFood();
+  renderHome(); renderFood();
+}
+
+function changeLanguage(lang){
+  currentUser.lang = lang;
+  setUiLang(lang);
+  saveUsers();
+
+  document.getElementById("topLang").innerText = `Language: ${String(currentUser.lang).toUpperCase()}`;
+
+  applyAppI18n();
+  if(!screenHome.classList.contains("hide")) renderHome();
+  if(!screenFood.classList.contains("hide")) renderFood();
+  if(!screenWorkout.classList.contains("hide")) renderWorkout();
+  if(!screenProfile.classList.contains("hide")) renderProfile();
+  renderStorageInfo();
 }
 
 /* =========================================================
-   Admin (Read-only + Search)
+   Storage info (show where stored)
 ========================================================= */
+function renderStorageInfo(){
+  const info = `
+    <div class="disclaimer">
+      <b>${currentUser.lang==="th"?"ตำแหน่งจัดเก็บข้อมูล":"Where data is stored"}</b>
+      <div style="margin-top:6px">
+        • LocalStorage Key (Users): <b>${LS_USERS}</b><br>
+        • LocalStorage Key (Session): <b>${LS_SESSION}</b><br>
+        • LocalStorage Key (UI Language): <b>${LS_UI_LANG}</b><br><br>
+        ${currentUser.lang==="th"
+          ? "หมายเหตุ: ระบบนี้เป็น Frontend-only ข้อมูลไม่ถูกส่งขึ้นเซิร์ฟเวอร์ (Study Case)"
+          : "Note: Frontend-only demo. Data is not stored on a server (Study Case)."}
+      </div>
+    </div>
+  `;
+  document.getElementById("storageInfo").innerHTML = info;
+}
+
+/* =========================================================
+   Admin (Absolute power)
+========================================================= */
+function bootAdmin(){
+  hideAll();
+  adminWrap.classList.remove("hide");
+
+  document.getElementById("adminLangSwitch").value = currentUser.lang;
+  document.getElementById("adminLangLine").innerText = `Language: ${String(currentUser.lang).toUpperCase()}`;
+
+  document.getElementById("t_admin_disclaimer").innerText = `${t("adminDis")}\n${t("study")}`;
+  document.getElementById("t_admin_rules").innerText = t("adminRules");
+
+  renderAdmin();
+  startAdminTutorial(false);
+}
+
+function adminChangeLang(lang){
+  currentUser.lang = lang;
+  setUiLang(lang);
+  saveUsers();
+
+  document.getElementById("adminLangLine").innerText = `Language: ${String(currentUser.lang).toUpperCase()}`;
+  document.getElementById("t_admin_disclaimer").innerText = `${t("adminDis")}\n${t("study")}`;
+  document.getElementById("t_admin_rules").innerText = t("adminRules");
+  document.getElementById("btnReplayAdminTutorial").innerText = t("replayAdminTut");
+
+  renderAdmin();
+}
+
+let editingUserId = null;
+
 function renderAdmin(){
-  const q = (adminSearch?.value || "").trim().toLowerCase();
+  const q = (document.getElementById("adminSearch").value || "").trim().toLowerCase();
+  const list = users; // admin can see all (absolute)
 
-  const userList = users.filter(u => u.role === "user");
-  const totalUsers = userList.length;
-  const langs = userList.reduce((acc,u)=>{ acc[u.lang]= (acc[u.lang]||0)+1; return acc; }, {});
-  const langList = Object.keys(langs).map(k=>`${k.toUpperCase()}:${langs[k]}`).join(" • ");
+  const total = list.length;
+  const totalUsers = list.filter(x=>x.role==="user").length;
+  const totalAdmins = list.filter(x=>x.role==="admin").length;
 
-  adminStats.innerHTML = `
-    <div class="disclaimer" id="adminStats">
-      <b>${currentUser.lang==="th"?"สถิติสรุป":"Summary"}</b><br/>
-      ${currentUser.lang==="th"?"จำนวนผู้ใช้":"Users"}: <b>${totalUsers}</b><br/>
-      ${currentUser.lang==="th"?"ภาษา":"Languages"}: <b>${langList || "-"}</b><br/>
-      <div style="margin-top:8px">${t("adminDis")}</div>
+  const langs = list.reduce((acc,u)=>{ acc[u.lang]=(acc[u.lang]||0)+1; return acc; }, {});
+  const langText = Object.keys(langs).map(k=>`${k.toUpperCase()}:${langs[k]}`).join(" • ");
+
+  document.getElementById("adminStats").innerHTML = `
+    <div class="disclaimer">
+      <b>${currentUser.lang==="th"?"สถิติระบบ":"System Stats"}</b><br>
+      ${currentUser.lang==="th"?"ทั้งหมด":"Total"}: <b>${total}</b> •
+      Users: <b>${totalUsers}</b> •
+      Admins: <b>${totalAdmins}</b><br>
+      ${currentUser.lang==="th"?"ภาษา":"Languages"}: <b>${langText || "-"}</b>
     </div>
   `;
 
-  const filtered = q ? userList.filter(u =>
+  const filtered = q ? list.filter(u =>
     (u.id||"").toLowerCase().includes(q) ||
     (u.user||"").toLowerCase().includes(q) ||
     (u.email||"").toLowerCase().includes(q) ||
-    (u.lang||"").toLowerCase().includes(q) ||
-    (u.goal||"").toLowerCase().includes(q)
-  ) : userList;
+    (u.role||"").toLowerCase().includes(q) ||
+    (u.lang||"").toLowerCase().includes(q)
+  ) : list;
 
-  let table = `<table>
+  let html = `<table>
     <tr>
-      <th>User ID</th>
-      <th>Username</th>
-      <th>Email</th>
-      <th>Lang</th>
-      <th>Goal</th>
+      <th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Lang</th><th>Online</th><th>Action</th>
     </tr>`;
 
   filtered.forEach(u=>{
-    table += `<tr>
+    html += `<tr>
       <td>${escapeHtml(u.id)}</td>
       <td>${escapeHtml(u.user)}</td>
       <td>${escapeHtml(u.email)}</td>
+      <td>${escapeHtml(u.role)}</td>
       <td>${String(u.lang||"en").toUpperCase()}</td>
-      <td>${escapeHtml(u.goal||"maintain")}</td>
+      <td>${u.online ? "✅" : "-"}</td>
+      <td>
+        <button class="bA" style="margin:0;padding:8px 10px;border-radius:12px;box-shadow:none;width:auto"
+          onclick="openAdminEdit('${escapeHtml(u.id)}')">
+          ${currentUser.lang==="th"?"จัดการ":"Manage"}
+        </button>
+      </td>
     </tr>`;
   });
-  table += `</table>`;
-  adminData.innerHTML = table;
+
+  html += `</table>`;
+  document.getElementById("adminData").innerHTML = html;
+
+  document.getElementById("btnReplayAdminTutorial").innerText = t("replayAdminTut");
+}
+
+function openAdminEdit(id){
+  editingUserId = id;
+  const u = users.find(x=>x.id===id);
+  if(!u) return;
+
+  document.getElementById("t_admin_edit_title").innerText = t("adminEditTitle");
+  document.getElementById("t_admin_edit_note").innerText = t("adminEditNote");
+  document.getElementById("adminEditResult").innerText = "";
+
+  document.getElementById("eUser").value = u.user || "";
+  document.getElementById("eEmail").value = u.email || "";
+  document.getElementById("eName").value = u.name || "";
+  document.getElementById("eLname").value = u.lname || "";
+  document.getElementById("eAge").value = u.age || 0;
+  document.getElementById("eGender").value = u.gender || "other";
+  document.getElementById("eWeight").value = u.weight || 0;
+  document.getElementById("eHeight").value = u.height || 0;
+  document.getElementById("eGoal").value = u.goal || "maintain";
+  document.getElementById("eLang").value = u.lang || "en";
+  document.getElementById("eRole").value = u.role || "user";
+  document.getElementById("ePass").value = "";
+
+  adminEditOverlay.classList.remove("hide");
+}
+
+function closeAdminEdit(){
+  adminEditOverlay.classList.add("hide");
+  editingUserId = null;
+}
+
+function adminSaveUser(){
+  const u = users.find(x=>x.id===editingUserId);
+  if(!u) return;
+
+  const newUser = document.getElementById("eUser").value.trim();
+  const newEmail = document.getElementById("eEmail").value.trim();
+  const newPass = document.getElementById("ePass").value.trim();
+
+  // basic validate username rule
+  if(newUser.length < 3){
+    document.getElementById("adminEditResult").innerText = (currentUser.lang==="th"?"Username ต้อง ≥ 3":"Username must be ≥ 3");
+    return;
+  }
+
+  // uniqueness checks (except self)
+  if(users.find(x=>x.id!==u.id && x.user.toLowerCase()===newUser.toLowerCase())){
+    document.getElementById("adminEditResult").innerText = (currentUser.lang==="th"?"Username ซ้ำ":"Duplicate username");
+    return;
+  }
+  if(newEmail && users.find(x=>x.id!==u.id && (x.email||"").toLowerCase()===newEmail.toLowerCase())){
+    document.getElementById("adminEditResult").innerText = (currentUser.lang==="th"?"Email ซ้ำ":"Duplicate email");
+    return;
+  }
+
+  // apply edits
+  u.user = newUser;
+  u.email = newEmail;
+  u.name = document.getElementById("eName").value.trim();
+  u.lname = document.getElementById("eLname").value.trim();
+  u.age = Number(document.getElementById("eAge").value || 0);
+  u.gender = document.getElementById("eGender").value;
+  u.weight = Number(document.getElementById("eWeight").value || 0);
+  u.height = Number(document.getElementById("eHeight").value || 0);
+  u.goal = document.getElementById("eGoal").value;
+  u.lang = document.getElementById("eLang").value;
+  u.role = document.getElementById("eRole").value;
+
+  if(newPass){
+    if(newPass.length < 6 || !hasSpecialChar(newPass)){
+      document.getElementById("adminEditResult").innerText = (currentUser.lang==="th"
+        ? "รหัสผ่านต้อง ≥ 6 และมีอักขระพิเศษ"
+        : "Password must be ≥ 6 and include special char");
+      return;
+    }
+    u.pass = newPass;
+  }
+
+  users = sanitizeUsers(users);
+  saveUsers();
+  document.getElementById("adminEditResult").innerText = (currentUser.lang==="th"?"บันทึกแล้ว ✅":"Saved ✅");
+
+  // if admin edited self language -> refresh admin UI
+  renderAdmin();
+}
+
+function adminForceLogout(){
+  const u = users.find(x=>x.id===editingUserId);
+  if(!u) return;
+
+  u.forceLogoutVersion = Number(u.forceLogoutVersion||0) + 1;
+  u.online = false;
+  saveUsers();
+
+  document.getElementById("adminEditResult").innerText = (currentUser.lang==="th"
+    ? "บังคับออกจากระบบแล้ว ✅ (Local-only)"
+    : "Force logout done ✅ (Local-only)");
+
+  // If the user is the same browser session user, it will kick on next check
+  renderAdmin();
+}
+
+function adminDeleteUser(){
+  const u = users.find(x=>x.id===editingUserId);
+  if(!u) return;
+
+  if(u.id === currentUser.id){
+    document.getElementById("adminEditResult").innerText = (currentUser.lang==="th"
+      ? "ลบตัวเองไม่ได้"
+      : "Cannot delete yourself");
+    return;
+  }
+
+  const ok = confirm(currentUser.lang==="th"
+    ? `ยืนยันลบผู้ใช้ ${u.user}?`
+    : `Delete user ${u.user}?`);
+  if(!ok) return;
+
+  users = users.filter(x=>x.id!==u.id);
+  saveUsers();
+  closeAdminEdit();
+  renderAdmin();
+}
+
+function adminResetPassword(){
+  const u = users.find(x=>x.id===editingUserId);
+  if(!u) return;
+
+  const random = "Reset@" + Math.floor(100000 + Math.random()*900000); // meets special char rule
+  u.pass = random;
+  saveUsers();
+  document.getElementById("adminEditResult").innerText =
+    (currentUser.lang==="th" ? `รีเซ็ตแล้ว ✅ รหัสใหม่: ${random}` : `Reset ✅ New pass: ${random}`);
+  renderAdmin();
 }
 
 /* =========================================================
-   Tutorials
+   Tutorials (Updated)
 ========================================================= */
 let tutorialMode = null; // "user" | "admin"
 let tutorialIndex = 0;
 
+const USER_TUT = {
+  en: [
+    {step:"Step 1/6", title:"Welcome", body:"This is FitSense AI (study). You can track intake, burned calories and get AI suggestions.", highlight:null},
+    {step:"Step 2/6", title:"Home Dashboard", body:"Home shows Target / Intake / Burned / Remaining. This is the main daily view.", highlight:"homeKpis"},
+    {step:"Step 3/6", title:"Food Logging", body:"Go to Food to generate meals and log your intake (kcal).", highlight:"tabFood"},
+    {step:"Step 4/6", title:"Workout Burned", body:"Go to Workout to log minutes and estimate calories burned (MET).", highlight:"tabWorkout"},
+    {step:"Step 5/6", title:"Profile & Language", body:"You can edit your info and change language. Email is locked as identifier.", highlight:"tabProfile"},
+    {step:"Step 6/6", title:"Storage Info", body:"Settings shows where data is stored (LocalStorage keys).", highlight:"tabSettings"},
+  ],
+  th: [
+    {step:"ขั้นที่ 1/6", title:"ยินดีต้อนรับ", body:"นี่คือ FitSense AI (Study) ใช้ติดตามแคลอรีที่กิน/เผา และรับคำแนะนำ AI (จำลอง)", highlight:null},
+    {step:"ขั้นที่ 2/6", title:"Dashboard หน้าแรก", body:"หน้าแรกสรุป เป้า/กินแล้ว/เผาไป/คงเหลือ เป็นภาพรวมรายวัน", highlight:"homeKpis"},
+    {step:"ขั้นที่ 3/6", title:"บันทึกอาหาร", body:"ไปที่หน้าอาหาร เพื่อสร้างเมนู AI และบันทึกแคลอรีที่กิน", highlight:"tabFood"},
+    {step:"ขั้นที่ 4/6", title:"ออกกำลังและเผาแคลอรี", body:"ไปที่หน้าออกกำลัง เพื่อบันทึกนาทีและคำนวณแคลอรีที่เผา (MET)", highlight:"tabWorkout"},
+    {step:"ขั้นที่ 5/6", title:"โปรไฟล์และภาษา", body:"แก้ข้อมูลส่วนตัวได้และเปลี่ยนภาษาได้ แต่ Email ถูกล็อกเป็นตัวระบุตัวตน", highlight:"tabProfile"},
+    {step:"ขั้นที่ 6/6", title:"ที่เก็บข้อมูล", body:"หน้า Settings จะแสดงว่า data ถูกเก็บใน LocalStorage (พร้อม key)", highlight:"tabSettings"},
+  ]
+};
+
+const ADMIN_TUT = {
+  en: [
+    {step:"Step 1/5", title:"Admin Warning", body:"Admin has absolute power (study). Use responsibly.", highlight:null},
+    {step:"Step 2/5", title:"Search & List", body:"You can search and view all users here.", highlight:"adminSearch"},
+    {step:"Step 3/5", title:"Manage User", body:"Click Manage to edit user, reset password, force logout, or delete.", highlight:"adminData"},
+    {step:"Step 4/5", title:"Language Switch", body:"Admin can switch language from the top dropdown.", highlight:"adminLangSwitch"},
+    {step:"Step 5/5", title:"Finish", body:"Always logout after admin actions.", highlight:"btnAdminLogout"},
+  ],
+  th: [
+    {step:"ขั้นที่ 1/5", title:"คำเตือนแอดมิน", body:"แอดมินมีสิทธิ์สูงสุด (เพื่อการศึกษา) โปรดใช้อย่างรับผิดชอบ", highlight:null},
+    {step:"ขั้นที่ 2/5", title:"ค้นหาและดูรายชื่อ", body:"สามารถค้นหาและดูผู้ใช้ทั้งหมดได้ในหน้านี้", highlight:"adminSearch"},
+    {step:"ขั้นที่ 3/5", title:"จัดการผู้ใช้", body:"กด Manage เพื่อแก้ไขผู้ใช้ รีเซ็ตรหัส บังคับออก หรือ ลบผู้ใช้", highlight:"adminData"},
+    {step:"ขั้นที่ 4/5", title:"เปลี่ยนภาษา", body:"แอดมินเปลี่ยนภาษาได้จาก dropdown ด้านบน", highlight:"adminLangSwitch"},
+    {step:"ขั้นที่ 5/5", title:"เสร็จสิ้น", body:"ควรออกจากระบบหลังจัดการเสมอ", highlight:"btnAdminLogout"},
+  ]
+};
+
 function clearHighlight(){
-  document.querySelectorAll(".highlight").forEach(el => el.classList.remove("highlight"));
+  document.querySelectorAll(".highlight").forEach(el=>el.classList.remove("highlight"));
 }
 function applyHighlight(targetId){
   clearHighlight();
@@ -1793,149 +2253,131 @@ function openTutorial(){ tutorialOverlay.classList.remove("hide"); }
 function closeTutorial(){ tutorialOverlay.classList.add("hide"); clearHighlight(); }
 
 function startUserTutorial(forceReplay=false){
-  if(!currentUser || currentUser.role !== "user") return;
+  if(!currentUser || currentUser.role!=="user") return;
   if(!forceReplay && currentUser.firstLaunchDone) return;
-  tutorialMode = "user";
-  tutorialIndex = 0;
-  openTutorial();
-  renderTutorialStep();
+  tutorialMode="user"; tutorialIndex=0;
+  openTutorial(); renderTutorialStep();
 }
 
 function startAdminTutorial(forceReplay=false){
-  if(!currentUser || currentUser.role !== "admin") return;
+  if(!currentUser || currentUser.role!=="admin") return;
   if(!forceReplay && currentUser.firstAdminTutDone) return;
-  tutorialMode = "admin";
-  tutorialIndex = 0;
-  openTutorial();
-  renderTutorialStep();
+  tutorialMode="admin"; tutorialIndex=0;
+  openTutorial(); renderTutorialStep();
 }
 
 function renderTutorialStep(){
-  const steps = (tutorialMode === "admin") ? I18N[currentUser.lang].tutAdminSteps : I18N[currentUser.lang].tutUserSteps;
+  const lang = currentUser.lang;
+  const steps = (tutorialMode==="admin") ? (ADMIN_TUT[lang]||ADMIN_TUT.en) : (USER_TUT[lang]||USER_TUT.en);
   const s = steps[tutorialIndex];
 
   tutorialStepLabel.innerText = s.step;
   tutorialTitle.innerText = s.title;
   tutorialBody.innerText = s.body;
-  tutorialDisclaimer.innerText = `“${t("appStudy")}”`;
+  tutorialDisclaimer.innerText = `“${t("study")}”`;
 
-  btnTutorialBack.disabled = tutorialIndex === 0;
+  btnTutorialBack.disabled = tutorialIndex===0;
+  const last = tutorialIndex===steps.length-1;
 
-  const isLast = tutorialIndex === steps.length - 1;
-  btnTutorialNext.innerText = isLast ? (currentUser.lang==="th" ? "เริ่มใช้งาน" : "Start Using App") : (currentUser.lang==="th" ? "ถัดไป" : "Next");
-  btnTutorialSkip.innerText = currentUser.lang==="th" ? "ข้าม" : "Skip";
+  btnTutorialSkip.innerText = (lang==="th") ? "ข้าม" : "Skip";
+  btnTutorialNext.innerText = last ? ((lang==="th")?"เริ่มใช้งาน":"Start") : ((lang==="th")?"ถัดไป":"Next");
 
-  if(tutorialMode === "user"){
-    if(s.highlight === "tabFood") goTab("food", true);
-    if(s.highlight === "tabWorkout") goTab("workout", true);
-    if(s.highlight === "tabSettings") goTab("settings", true);
+  // Auto navigate highlight for user tutorial
+  if(tutorialMode==="user"){
+    if(s.highlight==="tabFood") goTab("food", true);
+    if(s.highlight==="tabWorkout") goTab("workout", true);
+    if(s.highlight==="tabProfile") goTab("profile", true);
+    if(s.highlight==="tabSettings") goTab("settings", true);
+    if(s.highlight==="homeKpis") goTab("home", true);
   }
+
   applyHighlight(s.highlight);
 }
 
 function tutorialNext(){
-  const steps = (tutorialMode === "admin") ? I18N[currentUser.lang].tutAdminSteps : I18N[currentUser.lang].tutUserSteps;
-  if(tutorialIndex < steps.length - 1){
+  const lang = currentUser.lang;
+  const steps = (tutorialMode==="admin") ? (ADMIN_TUT[lang]||ADMIN_TUT.en) : (USER_TUT[lang]||USER_TUT.en);
+
+  if(tutorialIndex < steps.length-1){
     tutorialIndex++;
     renderTutorialStep();
     return;
   }
-  if(tutorialMode === "user") currentUser.firstLaunchDone = true;
-  if(tutorialMode === "admin") currentUser.firstAdminTutDone = true;
-  save();
+  if(tutorialMode==="user") currentUser.firstLaunchDone = true;
+  if(tutorialMode==="admin") currentUser.firstAdminTutDone = true;
+  saveUsers();
   closeTutorial();
-  if(tutorialMode === "user") goTab("home", true);
+  if(tutorialMode==="user") goTab("home", true);
 }
+
 function tutorialBack(){
-  if(tutorialIndex <= 0) return;
+  if(tutorialIndex<=0) return;
   tutorialIndex--;
   renderTutorialStep();
 }
+
 function tutorialSkip(){
-  if(tutorialMode === "user") currentUser.firstLaunchDone = true;
-  if(tutorialMode === "admin") currentUser.firstAdminTutDone = true;
-  save();
+  if(tutorialMode==="user") currentUser.firstLaunchDone = true;
+  if(tutorialMode==="admin") currentUser.firstAdminTutDone = true;
+  saveUsers();
   closeTutorial();
-  if(tutorialMode === "user") goTab("home", true);
+  if(tutorialMode==="user") goTab("home", true);
 }
 
 /* =========================================================
-   Hidden Admin Access (Long-press on Settings title)
-========================================================= */
-let pressTimer = null;
-function bindLongPressAdminHint(){
-  const title = document.getElementById("t_settings_title");
-  if(!title) return;
-
-  const start = () => {
-    pressTimer = setTimeout(() => {
-      alert(currentUser.lang==="th"
-        ? "คำใบ้: ใช้บัญชี admin (username: admin / password: admin123) ที่หน้า Login"
-        : "Hint: Use admin account (username: admin / password: admin123) at Login"
-      );
-    }, 1200);
-  };
-  const end = () => { if(pressTimer) clearTimeout(pressTimer); pressTimer = null; };
-
-  title.addEventListener("touchstart", start);
-  title.addEventListener("touchend", end);
-  title.addEventListener("touchcancel", end);
-
-  title.addEventListener("mousedown", start);
-  title.addEventListener("mouseup", end);
-  title.addEventListener("mouseleave", end);
-}
-
-/* =========================================================
-   Auto login (Remember me)
+   Auto login
 ========================================================= */
 function tryAutoLogin(){
-  const remembered = localStorage.getItem(LS_SESSION_USER);
-  if(!remembered) return false;
-  const u = users.find(x => x.user.toLowerCase() === remembered.toLowerCase());
-  if(!u) return false;
+  const raw = localStorage.getItem(LS_SESSION);
+  if(!raw) return false;
+  try{
+    const s = JSON.parse(raw);
+    const u = users.find(x => x.user.toLowerCase() === String(s.username||"").toLowerCase());
+    if(!u) return false;
 
-  currentUser = u;
-  currentUser.online = true;
-  setUiLang(currentUser.lang);
-  save();
+    currentUser = u;
+    currentUser.online = true;
+    saveUsers();
 
-  hideAll();
-  if(currentUser.role === "admin"){
-    adminBox.classList.remove("hide");
-    adminLang.innerText = `Language: ${currentUser.lang.toUpperCase()}`;
-    applyAppI18n();
-    renderAdmin();
-    startAdminTutorial(false);
-  } else {
-    appBox.classList.remove("hide");
-    bottomNav.classList.remove("hide");
-    bootUserApp();
+    // If forced logout version mismatch -> cancel session
+    if((s.forceLogoutVersion ?? 0) !== (currentUser.forceLogoutVersion ?? 0)){
+      clearSession();
+      return false;
+    }
+
+    // set UI language based on user
+    setUiLang(currentUser.lang);
+
+    if(currentUser.role==="admin") bootAdmin();
+    else bootUserApp();
+
+    return true;
+  }catch{
+    return false;
   }
-  return true;
 }
 
 /* =========================================================
    Init
 ========================================================= */
 (function init(){
-  // default language before login
-  applyStaticI18n(getUiLang());
+  // default ui language
+  applyStaticI18n();
 
-  // wire admin search
-  if(adminSearch){
-    adminSearch.addEventListener("input", () => {
-      if(currentUser && currentUser.role === "admin") renderAdmin();
-    });
-  }
+  // sync language selectors initial
+  document.getElementById("regLangSwitch").value = getUiLang();
+  document.getElementById("loginLangSwitch").value = getUiLang();
+  document.getElementById("forgotLangSwitch").value = getUiLang();
 
-  // attempt auto login
+  // admin search enter
+  document.getElementById("adminSearch").addEventListener("keydown", (e)=>{
+    if(e.key==="Enter") renderAdmin();
+  });
+
+  // Start with auto login or register
   if(!tryAutoLogin()){
-    showRegister(); // or showLogin()
+    showRegister();
   }
-
-  // bind long press hint (works when settings screen exists)
-  bindLongPressAdminHint();
 })();
 </script>
 
